@@ -1,0 +1,38 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"projectIndex" : 0,
+					"source" : "."
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Project"
+				}
+			],
+			"targets" : []
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/M1__ISICG_S1/M1-S2/ISIR/RT_ISICG_etu_2022-master-89931bf989a63af4bc67b14d2aba637903bff208/lib/glm/out/build/x64-Debug",
+		"source" : "D:/M1__ISICG_S1/M1-S2/ISIR/RT_ISICG_etu_2022-master-89931bf989a63af4bc67b14d2aba637903bff208/lib/glm"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 2
+	}
+}
