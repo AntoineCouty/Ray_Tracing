@@ -22,14 +22,14 @@ namespace RT_ISICG
 
 	void PerspectiveCamera::_updateViewport()
 	{
-		float h	   = glm::tan( glm::radians( _fovy / 2 ) ) * _focalDistance * 2;
-		_viewportV = Vec3f( 0.0, h, 0.0 );
+		float h	   = glm::tan( glm::radians( _fovy * 0.5 ) ) * _focalDistance * 2;
 
-		_viewportU = Vec3f( _aspectRatio, 0.0, 0.0 );
+		_viewportV = _v * h;
+		_viewportU = _u * h * _aspectRatio;
 
-		_viewportTopLeftCorner = _position - _viewportU - _viewportV;
-		_viewportTopLeftCorner /= 2;
-		_viewportTopLeftCorner.z = _position.z + _focalDistance;
+		_viewportTopLeftCorner.x = _position.x - _viewportU.x * 0.5;
+		_viewportTopLeftCorner.y = _position.y + _viewportV.y * 0.5;	
+		_viewportTopLeftCorner.z = _position.z - (_focalDistance * _w.z);
 		/// TODO ! _viewportTopLeftCorner ?	_viewportU ? _viewportV ?
 	}
 
