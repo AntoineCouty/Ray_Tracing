@@ -14,7 +14,7 @@ namespace RT_ISICG
 	using ObjectMapPair	  = ObjectMap::value_type;
 	using MaterialMap	  = std::map<const std::string, BaseMaterial *>;
 	using MaterialMapPair = MaterialMap::value_type;
-	using LightList		  = std::vector<BaseLight *>;
+	using LightList		  = std::vector<BaseLight *>;  
 
 	class Scene
 	{

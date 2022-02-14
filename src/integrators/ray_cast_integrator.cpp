@@ -10,8 +10,8 @@ namespace RT_ISICG
 		HitRecord hitRecord;
 		if ( p_scene.intersect( p_ray, p_tMin, p_tMax, hitRecord ) )
 		{
-			/// TODO ! cos theta...
-			return hitRecord._object->getMaterial()->getFlatColor();
+			float angle = glm::max( 0.f, -glm::dot( glm::normalize( hitRecord._normal ), glm::normalize( p_ray.getDirection() ) ) );
+			return hitRecord._object->getMaterial()->getFlatColor() * angle ;
 		}
 		else
 		{

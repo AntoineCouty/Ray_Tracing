@@ -35,19 +35,23 @@ namespace RT_ISICG
 	{
 		const int width	 = p_texture.getWidth();
 		const int height = p_texture.getHeight();
-
 		Chrono			   chrono;
 		ConsoleProgressBar progressBar;
 
 		progressBar.start( height, 50 );
 		chrono.start();
-
 		for ( int j = 0; j < height; j++ )
 		{
 			for ( int i = 0; i < width; i++ )
-			{
-				Ray ray = p_camera->generateRay( float(i)/(width-1), float(j)/(height-1) );
-				p_texture.setPixel( i , j ,  (ray.getDirection() + 1.f ) * 0.5f);
+			{	
+				Vec3f color = Vec3f( 0.f );
+				for ( int nb = 0; nb < _nbPixelSamples; nb++ ) {
+					float ran_x = randomFloat();
+					float ran_y = randomFloat();
+					Ray	  ray	= p_camera->generateRay( float( i + ran_x ) / ( width - 1 ),float( j + ran_y ) / ( height - 1 ) );
+					color += _integrator->Li( p_scene, ray, 0.f, 10.f );
+				}
+				p_texture.setPixel(i, j, color/Vec3f(_nbPixelSamples));
 			}
 			progressBar.next();
 		}
