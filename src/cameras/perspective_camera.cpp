@@ -33,7 +33,9 @@ namespace RT_ISICG
 		_viewportV = _v * h;
 		_viewportU = _u * h * _aspectRatio;
 
-		_viewportTopLeftCorner = _position - _viewportU * Vec3f( 0.5 ) + _viewportV * Vec3f( 0.5 ) - Vec3f(1.0, 1.0, _focalDistance)*_w;
+		_viewportTopLeftCorner = _position - _viewportU * Vec3f( 0.5 ) + _viewportV * Vec3f( 0.5 ) - Vec3f( 1.0, 1.0, _focalDistance ) * _w;
+		std::cout << _viewportTopLeftCorner.x << " " << _viewportTopLeftCorner.y << " " << _viewportTopLeftCorner.z
+				  << std::endl;
 		/// TODO ! _viewportTopLeftCorner ?	_viewportU ? _viewportV ?
 	}
 
