@@ -18,10 +18,6 @@ namespace RT_ISICG
 		_w = glm::normalize( p_position - p_lookAt );
 		_u = glm::normalize( glm::cross( p_up, _w ) ); 
 		_v = glm::normalize( glm::cross( _w, _u ) );
-		std::cout << _u.x << " " << _u.y << " " << _u.z << std::endl;
-		std::cout << _v.x << " " << _v.y << " " << _v.z << std::endl;
-		std::cout << _w.x << " " << _w.y << " " << _w.z << std::endl;
-		/// TODO ! _u ? _v ? _w 
 
 		_updateViewport();
 	}
@@ -34,9 +30,6 @@ namespace RT_ISICG
 		_viewportU = _u * h * _aspectRatio;
 
 		_viewportTopLeftCorner = _position - _viewportU * Vec3f( 0.5 ) + _viewportV * Vec3f( 0.5 ) - Vec3f( 1.0, 1.0, _focalDistance ) * _w;
-		std::cout << _viewportTopLeftCorner.x << " " << _viewportTopLeftCorner.y << " " << _viewportTopLeftCorner.z
-				  << std::endl;
-		/// TODO ! _viewportTopLeftCorner ?	_viewportU ? _viewportV ?
 	}
 
 } // namespace RT_ISICG

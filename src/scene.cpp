@@ -1,6 +1,8 @@
 #include "scene.hpp"
 #include "materials/color_material.hpp"
 #include "objects/sphere.hpp"
+#include "objects/plane.hpp"
+#include "lights/point_light.hpp"
 
 namespace RT_ISICG
 {
@@ -26,12 +28,17 @@ namespace RT_ISICG
 	{
 		// Add objects.
 		_addObject( new Sphere( "Sphere1", Vec3f( 0.f, 0.f, 3.f ), 1.f ) );
+		_addObject( new Plane( "Plane1", Vec3f( 0.f, -2.f, 0.f ), Vec3f( 0.f, 1.f, 0.f ) ) );
 
 		// Add materials.
 		_addMaterial( new ColorMaterial( "Blue", BLUE ) );
+		_addMaterial( new ColorMaterial( "Red", RED ) );
 
 		// Link objects and materials.
 		_attachMaterialToObject( "Blue", "Sphere1" );
+		_attachMaterialToObject( "Red", "Plane1" );
+
+		_addLight( new PointLight( WHITE, 100.f, Vec3f(1.f, 10.f, 1.f) ) );
 	}
 
 	bool Scene::intersect( const Ray & p_ray, const float p_tMin, const float p_tMax, HitRecord & p_hitRecord ) const
@@ -47,6 +54,17 @@ namespace RT_ISICG
 			}
 		}
 		return hit;
+	}
+
+	bool Scene::intersectAny( const Ray & p_ray, const float p_tMin, const float p_tMax ) const { 
+		for ( const ObjectMapPair & object : _objectMap )
+		{
+			if ( object.second->intersectAny( p_ray, p_tMin, p_tMax ) )
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	void Scene::_addObject( BaseObject * p_object )

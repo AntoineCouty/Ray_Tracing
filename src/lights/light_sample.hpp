@@ -1,6 +1,8 @@
 #ifndef __RT_ISICG_LIGHT_SAMPLE__
 #define __RT_ISICG_LIGHT_SAMPLE__
 
+#include "defines.hpp"
+
 namespace RT_ISICG
 {
 	struct LightSample

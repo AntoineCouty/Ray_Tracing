@@ -1,5 +1,6 @@
 #include "renderer.hpp"
 #include "integrators/ray_cast_integrator.hpp"
+#include "integrators/direct_lighting_integrator.hpp"
 #include "utils/console_progress_bar.hpp"
 #include "utils/random.hpp"
 
@@ -13,7 +14,12 @@ namespace RT_ISICG
 
 		switch ( p_integratorType )
 		{
-		case IntegratorType::RAY_CAST:
+		case IntegratorType::RAY_CAST: 
+			_integrator = new RayCastIntegrator(); 
+			break;
+		case IntegratorType::DIRECT_LIGHT: 
+			_integrator = new DirectLightingIntegrator(); 
+			break;
 		default:
 		{
 			_integrator = new RayCastIntegrator();
@@ -49,9 +55,9 @@ namespace RT_ISICG
 					float ran_x = randomFloat();
 					float ran_y = randomFloat();
 					Ray	  ray	= p_camera->generateRay( float( i + ran_x ) / ( width - 1 ),float( j + ran_y ) / ( height - 1 ) );
-					color += _integrator->Li( p_scene, ray, 0.f, 10.f );
+					color += _integrator->Li( p_scene, ray, 0.f, 100.f );
 				}
-				p_texture.setPixel(i, j, color/Vec3f(_nbPixelSamples));
+				p_texture.setPixel(i, j, glm::clamp(color/Vec3f(_nbPixelSamples), 0.f, 1.f));
 			}
 			progressBar.next();
 		}
