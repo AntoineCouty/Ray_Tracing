@@ -38,7 +38,7 @@ namespace RT_ISICG
 		_attachMaterialToObject( "Blue", "Sphere1" );
 		_attachMaterialToObject( "Red", "Plane1" );
 
-		_addLight( new PointLight( WHITE, 100.f, Vec3f(1.f, 10.f, 1.f) ) );
+		_addLight( new PointLight( WHITE, 100.f, Vec3f(4.f, 10.f, 1.f) ) );
 	}
 
 	bool Scene::intersect( const Ray & p_ray, const float p_tMin, const float p_tMax, HitRecord & p_hitRecord ) const
