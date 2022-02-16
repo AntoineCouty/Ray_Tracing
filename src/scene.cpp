@@ -3,6 +3,7 @@
 #include "objects/sphere.hpp"
 #include "objects/plane.hpp"
 #include "lights/point_light.hpp"
+#include "lights/quad_light.hpp"
 
 namespace RT_ISICG
 {
@@ -38,7 +39,7 @@ namespace RT_ISICG
 		_attachMaterialToObject( "Blue", "Sphere1" );
 		_attachMaterialToObject( "Red", "Plane1" );
 
-		_addLight( new PointLight( WHITE, 100.f, Vec3f(4.f, 10.f, 1.f) ) );
+		_addLight(new QuadLight( WHITE, 20, Vec3f( 1.f, 10.f, 2.f ), Vec3f( -2.f, 0.f, 0.f ), Vec3f( 0.f, 0.f, 2.f ) ) );
 	}
 
 	bool Scene::intersect( const Ray & p_ray, const float p_tMin, const float p_tMax, HitRecord & p_hitRecord ) const

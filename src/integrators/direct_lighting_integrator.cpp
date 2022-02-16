@@ -14,15 +14,31 @@ namespace RT_ISICG
 
 			for ( BaseLight * light : p_scene.getLights() ) {
 
-				LightSample ls	= light->sample( hitRecord._point );
+				if (light->getSurface()) { 
+					#pragma omp parallel for
+					for ( int i = 0; i < _nbLightSamples; i++ ) {
+						LightSample ls	  = light->sample( hitRecord._point );
+						Ray o_ray = Ray( hitRecord._point, -ls._direction );
+						o_ray.offset( hitRecord._normal );
+						int count = 1;
+						if( !p_scene.intersectAny( o_ray, 0.f, 15.f ) ) { 
+							lum += _directLighting( ls, hitRecord ); 
+							count++;
+						}
+						lum /= Vec3f( float(count) );
+						//std::cout << lum.x << " " << lum.y << " "<< lum.z << std::endl;
+					}
 
-				Ray	o_ray = Ray( hitRecord._point, -ls._direction );
-				o_ray.offset( hitRecord._normal );
-
-				if ( !p_scene.intersectAny( o_ray, 0.f, 15.f ) )
-				{ 
-						lum += _directLighting( ls, hitRecord );
-				}	
+				}
+				else
+				{
+					LightSample ls	  = light->sample( hitRecord._point );
+					Ray o_ray = Ray( hitRecord._point, -ls._direction );
+					o_ray.offset( hitRecord._normal );
+					if ( !p_scene.intersectAny( o_ray, 0.f, 15.f ) ) { lum += _directLighting( ls, hitRecord ); }
+					
+				}
+					
 			}
 			return lum;
 		}
