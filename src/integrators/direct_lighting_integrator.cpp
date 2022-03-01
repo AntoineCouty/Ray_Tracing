@@ -34,6 +34,7 @@ namespace RT_ISICG
 					LightSample ls	  = light->sample( hitRecord._point );
 					Ray o_ray = Ray( hitRecord._point, -ls._direction );
 					o_ray.offset( hitRecord._normal );
+					int count = 0;
 					if ( !p_scene.intersectAny( o_ray, 0.f, 15.f ) ) { lum += _directLighting(o_ray, ls, hitRecord ); }
 					
 				}

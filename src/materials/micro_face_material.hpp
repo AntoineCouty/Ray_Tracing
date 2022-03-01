@@ -1,4 +1,4 @@
-#ifndef __RT_ISICG_MICRO_FACE_MATERIAL__
+#ifndef __RT_ISICG_MICRO_FACE_MA*ERIAL__
 #define __RT_ISICG_MICRO_FACE_MATERIAL__
 #include "base_material.hpp"
 #include "brdfs/lambert_brdf.hpp"
@@ -9,8 +9,8 @@ namespace RT_ISICG
 	class MicroFaceMaterial : public BaseMaterial
 	{
 	  public:
-		MicroFaceMaterial( const std::string & p_name, const Vec3f & p_diffuse, float p_s )
-			: BaseMaterial( p_name ), _brdfLambert( p_diffuse ), _brdfPhong( p_diffuse, p_s )
+		MicroFaceMaterial( const std::string & p_name, const Vec3f & p_diffuse, float p_sigma, const Vec3f & _FO, float p_metalness)
+			: BaseMaterial( p_name ), _brdfMicroFace( p_diffuse, p_sigma, _FO ), _brdfLambert( p_diffuse ), _metalness(p_metalness)
 		{
 		}
 		virtual ~MicroFaceMaterial() = default;
@@ -18,16 +18,17 @@ namespace RT_ISICG
 					 const HitRecord &	 p_hitRecord,
 					 const LightSample & p_lightSample ) const override
 		{
-			return _brdfLambert.evaluate() * 0.7f + _brdfPhong.evaluate( p_ray, p_hitRecord ) * 0.3f;
+			return ( 1.f - _metalness ) * _brdfLambert.evaluate() + _metalness * _brdfMicroFace.evaluate( p_ray, p_hitRecord, p_lightSample );
 		}
 		inline const Vec3f & getFlatColor() const override
 		{
-			return _brdfLambert.getKd() * 0.7f + _brdfPhong.getKd() * 0.3f;
+			return ( 1.f - _metalness ) * _brdfLambert.getKd() + _metalness * _brdfMicroFace.getKd();
 		}
 
 	  protected:
-		LambertBRDF _brdfLambert;
-		PhongBRDF	_brdfPhong;
+		MicroFaceBRDF _brdfMicroFace;
+		LambertBRDF	  _brdfLambert;
+		float		  _metalness;
 	};
 } // namespace RT_ISICG
 #endif // __RT_ISICG_MICRO_FACE_MATERIAL__

@@ -2,6 +2,7 @@
 #include "materials/color_material.hpp"
 #include "materials/lambert_material.hpp"
 #include "materials/plastic_material.hpp"
+#include "materials/micro_face_material.hpp"
 #include "objects/sphere.hpp"
 #include "objects/plane.hpp"
 #include "lights/point_light.hpp"
@@ -35,7 +36,7 @@ namespace RT_ISICG
 		_addObject( new Plane( "Plane1", Vec3f( 0.f, -2.f, 0.f ), Vec3f( 0.f, 1.f, 0.f ) ) );
 
 		// Add materials.
-		_addMaterial( new PlasticMaterial( "Grey", GREY, 64 ) );
+		_addMaterial( new MicroFaceMaterial( "Grey", GREY, 0.3f, Vec3f( 1, 0.85, 0.57 ), 1.f ));
 		_addMaterial( new LambertMaterial( "Red", RED ) );
 
 		// Link objects and materials.
