@@ -159,10 +159,16 @@
     <ClCompile Include="src\utils\console_progress_bar.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\brdfs\lambert_brdf.hpp" />
+    <ClInclude Include="src\brdfs\micro_face_brdf.hpp" />
+    <ClInclude Include="src\brdfs\phong_brdf.hpp" />
     <ClInclude Include="src\lights\circle_light.hpp" />
     <ClInclude Include="src\lights\quad_light.hpp" />
     <ClInclude Include="src\integrators\direct_lighting_integrator.hpp" />
     <ClInclude Include="src\lights\point_light.hpp" />
+    <ClInclude Include="src\materials\lambert_material.hpp" />
+    <ClInclude Include="src\materials\micro_face_material.hpp" />
+    <ClInclude Include="src\materials\plastic_material.hpp" />
     <ClInclude Include="src\objects\plane.hpp" />
     <ClInclude Include="src\geometry\plane_geometry.hpp" />
     <ClInclude Include="src\cameras\base_camera.hpp" />

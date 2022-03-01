@@ -5,6 +5,7 @@
 #include "lights/light_sample.hpp"
 #include "ray.hpp"
 
+
 namespace RT_ISICG
 {
 	class BaseMaterial
