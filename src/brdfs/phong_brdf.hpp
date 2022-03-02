@@ -14,7 +14,11 @@ namespace RT_ISICG
 		// * INV_PIf : could be done in the constructor...
 		inline Vec3f evaluate( Ray ray, HitRecord hitrecord, LightSample ls ) const
 		{
-			return _kd * glm::pow(glm::dot( ray.getDirection(), glm::reflect(ls._direction, hitrecord._normal ) ), _s );
+			Vec3f wO	 = ray.getDirection();
+			Vec3f wI	 = -ls._direction;
+			Vec3f normal = glm::normalize( hitrecord._normal );
+			Vec3f h		 = glm::normalize( wO + wI );
+			return _kd * glm::pow(glm::dot( wO, glm::reflect(h, normal ) ), _s );
 		}
 		inline const Vec3f & getKd() const { return _kd; }
 

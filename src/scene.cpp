@@ -36,14 +36,15 @@ namespace RT_ISICG
 		_addObject( new Plane( "Plane1", Vec3f( 0.f, -2.f, 0.f ), Vec3f( 0.f, 1.f, 0.f ) ) );
 
 		// Add materials.
-		_addMaterial( new MicroFaceMaterial( "Grey", GREY, 0.3f, Vec3f( 1, 0.85, 0.57 ), 1.f ));
+		_addMaterial(new MicroFaceMaterial( "Grey", Vec3f( 1.f, 0.85f, 0.57f ), 0.3f, 0.5f ) );
+		//_addMaterial(new PlasticMaterial( "Grey", GREY, 16.f ));
 		_addMaterial( new LambertMaterial( "Red", RED ) );
 
 		// Link objects and materials.
 		_attachMaterialToObject( "Grey", "Sphere1" );
 		_attachMaterialToObject( "Red", "Plane1" );
 
-		_addLight(new PointLight( WHITE, 60, Vec3f( 0.f, 0.f, -2.f ) ) );
+		_addLight(new PointLight( WHITE, 60, Vec3f( 1.f, 2.f, -2.f ) ) );
 	}
 
 	bool Scene::intersect( const Ray & p_ray, const float p_tMin, const float p_tMax, HitRecord & p_hitRecord ) const

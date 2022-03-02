@@ -9,8 +9,8 @@ namespace RT_ISICG
 	class MicroFaceMaterial : public BaseMaterial
 	{
 	  public:
-		MicroFaceMaterial( const std::string & p_name, const Vec3f & p_diffuse, float p_sigma, const Vec3f & _FO, float p_metalness)
-			: BaseMaterial( p_name ), _brdfMicroFace( p_diffuse, p_sigma, _FO ), _brdfLambert( p_diffuse ), _metalness(p_metalness)
+		MicroFaceMaterial( const std::string & p_name, const Vec3f & p_diffuse, float p_sigma, float p_metalness)
+			: BaseMaterial( p_name ), _brdfMicroFace( p_diffuse, p_sigma ), _brdfLambert( p_diffuse ), _metalness( p_metalness )
 		{
 		}
 		virtual ~MicroFaceMaterial() = default;
