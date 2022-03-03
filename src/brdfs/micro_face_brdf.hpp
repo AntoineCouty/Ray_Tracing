@@ -18,7 +18,7 @@ namespace RT_ISICG
 			Vec3f wI =  -p_ls._direction ;
 			Vec3f normal = glm::normalize( p_hitrecord._normal );
 			Vec3f h = glm::normalize(wO + wI) ;
-
+			
 			float G1wO = glm::dot( normal, wO );
 			float G1wI = glm::dot( normal, wI );
 
