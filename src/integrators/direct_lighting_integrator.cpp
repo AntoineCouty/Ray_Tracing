@@ -14,10 +14,11 @@ namespace RT_ISICG
 			Vec3f lum;
 			Vec3f lum_list = Vec3f(0.f);
 			for ( BaseLight * light : p_scene.getLights() ) {
-				int count = 0;
+
 				lum = Vec3f( 0.f );
+
 				if (light->getSurface()) { 
-					//#pragma omp parallel for
+					#pragma omp parallel for
 					for ( int i = 0; i < _nbLightSamples; i++ ) {
 						LightSample ls	  = light->sample( hitRecord._point );
 						Ray o_ray = Ray( hitRecord._point, -ls._direction );
@@ -26,20 +27,20 @@ namespace RT_ISICG
 						if( !p_scene.intersectAny( o_ray, 0.f, 15.f ) ) { 
 							lum += _directLighting(o_ray, ls, hitRecord ); 
 						}
-						count++;
+
 					}
+					lum /= Vec3f( float( _nbLightSamples ) );
 				}
-				else
-				{
+				else{
+
 					LightSample ls	  = light->sample( hitRecord._point );
 					Ray o_ray = Ray( hitRecord._point, -ls._direction );
 					o_ray.offset( hitRecord._normal );
-					count++;
+
 					if ( !p_scene.intersectAny( o_ray, 0.f, 15.f ) ) { 
 						lum = _directLighting(o_ray, ls, hitRecord );
 					}
 				}
-				lum /= Vec3f( float( count ) );
 				lum_list += lum;
 			}
 			return lum_list;

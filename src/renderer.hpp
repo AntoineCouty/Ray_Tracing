@@ -27,7 +27,7 @@ namespace RT_ISICG
 
 	  private:
 		BaseIntegrator * _integrator	 = nullptr;
-		int				 _nbPixelSamples = 1;
+		int				 _nbPixelSamples = 128;
 	};
 } // namespace RT_ISICG
 
