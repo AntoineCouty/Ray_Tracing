@@ -18,13 +18,13 @@ namespace RT_ISICG
 				lum = Vec3f( 0.f );
 
 				if (light->getSurface()) { 
-					#pragma omp parallel for
 					for ( int i = 0; i < _nbLightSamples; i++ ) {
 						LightSample ls	  = light->sample( hitRecord._point );
 						Ray o_ray = Ray( hitRecord._point, -ls._direction );
 						o_ray.offset( hitRecord._normal );
-						
-						if( !p_scene.intersectAny( o_ray, 0.f, 15.f ) ) { 
+	
+						if ( !p_scene.intersectAny( o_ray, 0.f, ls._distance ) )
+						{ 
 							lum += _directLighting(o_ray, ls, hitRecord ); 
 						}
 
@@ -32,12 +32,12 @@ namespace RT_ISICG
 					lum /= Vec3f( float( _nbLightSamples ) );
 				}
 				else{
-
 					LightSample ls	  = light->sample( hitRecord._point );
 					Ray o_ray = Ray( hitRecord._point, -ls._direction );
 					o_ray.offset( hitRecord._normal );
 
-					if ( !p_scene.intersectAny( o_ray, 0.f, 15.f ) ) { 
+					if ( !p_scene.intersectAny( o_ray, 0.f, ls._distance ) )
+					{ 
 						lum = _directLighting(o_ray, ls, hitRecord );
 					}
 				}

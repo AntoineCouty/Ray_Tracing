@@ -56,7 +56,7 @@ namespace RT_ISICG
 					float ran_x = randomFloat();
 					float ran_y = randomFloat();
 					Ray	  ray	= p_camera->generateRay( float( i + ran_x ) / ( width - 1 ),float( j + ran_y ) / ( height - 1 ) );
-					color += _integrator->Li( p_scene, ray, 0.f, 100.f );
+					color += _integrator->Li( p_scene, ray, 0.f, 1000.f );
 				}
 				p_texture.setPixel(i, j, glm::clamp(color/Vec3f(_nbPixelSamples), 0.f, 1.f));
 			}

@@ -16,7 +16,7 @@ namespace RT_ISICG
 					 const HitRecord &	 p_hitRecord,
 					 const LightSample & p_lightSample ) const override
 		{
-			return _brdf.evaluate( p_ray , p_lightSample);
+			return _brdf.evaluate( p_ray, p_hitRecord, p_lightSample );
 		}
 		inline const Vec3f & getFlatColor() const override { return _brdf.getKd(); }
 

@@ -34,7 +34,6 @@ namespace RT_ISICG
 			p_t2	  = p_t1;
 			p_t1	  = tmp;
 		}
-		
 		return true;
 	}
 

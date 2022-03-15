@@ -18,7 +18,7 @@ namespace RT_ISICG
 			Vec3f wI	 = -ls._direction;
 			Vec3f normal = glm::normalize( hitrecord._normal );
 			Vec3f h		 = glm::normalize( wO + wI );
-			return _kd * glm::pow(glm::dot( wO, glm::reflect(h, normal ) ), _s );
+			return _kd * glm::pow(glm::dot( normal, h), _s );
 		}
 		inline const Vec3f & getKd() const { return _kd; }
 

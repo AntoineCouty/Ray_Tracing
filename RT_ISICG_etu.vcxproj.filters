@@ -104,6 +104,9 @@
     <ClCompile Include="src\lights\circle_light.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\integrators\whitted_integrator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\defines.hpp">
@@ -209,6 +212,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\brdfs\oren_nayar_brdf.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\integrators\whitted_integrator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
