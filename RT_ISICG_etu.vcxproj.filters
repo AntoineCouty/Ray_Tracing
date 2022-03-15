@@ -217,5 +217,8 @@
     <ClInclude Include="src\integrators\whitted_integrator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\materials\mirror_material.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
