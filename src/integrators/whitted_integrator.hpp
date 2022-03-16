@@ -24,7 +24,7 @@ namespace RT_ISICG
 							const float	  p_tMax,
 							int			  p_nbBounces ) const;
 		Vec3f _directLighting( Ray ray, LightSample ls, HitRecord hitrecord ) const;
-		Vec3f _directLightingMain( const Scene & p_scene, const Ray & p_ray, HitRecord hitrecord ) const;
+		Vec3f _directLightingMain( const Scene & p_scene, HitRecord hitrecord ) const;
 		int	  _nbLightSamples = 16;
 		int	  _nbBounces	  = 5;
 	};

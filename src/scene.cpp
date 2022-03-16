@@ -4,6 +4,7 @@
 #include "materials/plastic_material.hpp"
 #include "materials/micro_face_material.hpp"
 #include "materials/matte_material.hpp"
+#include "materials/mirror_material.hpp"
 #include "objects/sphere.hpp"
 #include "objects/plane.hpp"
 #include "lights/point_light.hpp"
@@ -53,6 +54,7 @@ namespace RT_ISICG
 		// ================================================================
 		// Add materials .
 		// ================================================================
+		_addMaterial( new MirrorMaterial( " Mirror " ) );
 		_addMaterial( new MicroFaceMaterial( " WhiteMatte ", WHITE, 0.6f, 0.5f ) );
 		_addMaterial( new MicroFaceMaterial( " RedMatte ", RED, 0.6f, 0.5f ) );
 		_addMaterial( new MicroFaceMaterial( " GreenMatte ", GREEN, 0.6f, 0.5f ) );
@@ -64,7 +66,7 @@ namespace RT_ISICG
 		// ================================================================
 		// Spheres .
 		_addObject( new Sphere( " Sphere1 ", Vec3f( -2.f, 0.f, 3.f ), 1.5f ) );
-		 _attachMaterialToObject( " WhiteMatte ", " Sphere1 " );
+		 _attachMaterialToObject( " Mirror ", " Sphere1 " );
 		_addObject( new Sphere( " Sphere2 ", Vec3f( 2.f, 0.f, 3.f ), 1.5f ) );
 		_attachMaterialToObject( " WhiteMatte ", " Sphere2 " );
 		// Pseudo Cornell box made with infinite planes .
@@ -81,8 +83,8 @@ namespace RT_ISICG
 		// ================================================================
 		// Add lights .
 		// ================================================================
-		//_addLight( new PointLight( WHITE, 100.f, Vec3f( 0.f, 5.f, 0.f ) ) );
-		_addLight(new QuadLight( WHITE, 40.f, Vec3f( 1.f, 5.f, -2.f ), Vec3f( -2.f, 0.f, 0.f ), Vec3f( 0.f, 1.f, 2.f ) ) );
+		_addLight( new PointLight( WHITE, 100.f, Vec3f( 0.f, 5.f, 0.f ) ) );
+		//_addLight(new QuadLight( WHITE, 40.f, Vec3f( 1.f, 5.f, -2.f ), Vec3f( -2.f, 0.f, 0.f ), Vec3f( 0.f, 1.f, 2.f ) ) );
 	}
 	bool Scene::intersect( const Ray & p_ray, const float p_tMin, const float p_tMax, HitRecord & p_hitRecord ) const
 	{

@@ -175,6 +175,7 @@
     <ClInclude Include="src\materials\matte_material.hpp" />
     <ClInclude Include="src\materials\micro_face_material.hpp" />
     <ClInclude Include="src\materials\plastic_material.hpp" />
+    <ClInclude Include="src\materials\transparent_material.hpp" />
     <ClInclude Include="src\objects\plane.hpp" />
     <ClInclude Include="src\geometry\plane_geometry.hpp" />
     <ClInclude Include="src\cameras\base_camera.hpp" />

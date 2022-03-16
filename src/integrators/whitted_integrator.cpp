@@ -7,16 +7,10 @@ namespace RT_ISICG
 										const float	  p_tMin,
 										const float	  p_tMax ) const
 	{
-		HitRecord hitRecord;
-		if ( p_scene.intersect( p_ray, p_tMin, p_tMax, hitRecord ) )
-		{ 
-			return _liRecursif( p_scene, p_ray, p_tMin, p_tMax, 0 );
-		}
-		else
-		{
-			return _backgroundColor;
-		}
+		return _liRecursif( p_scene, p_ray, p_tMin, p_tMax, 0 );
 	}
+
+
 	Vec3f WhittedIntegrator::_liRecursif( const Scene & p_scene,
 										  const Ray &	p_ray,
 										  const float	p_tMin,
@@ -27,14 +21,21 @@ namespace RT_ISICG
 		if ( p_scene.intersect( p_ray, p_tMin, p_tMax, hitRecord ) )
 		{
 			if ( p_nbBounces == _nbBounces ) { return BLACK; }
+
 			if ( hitRecord._object->getMaterial()->isMirror() )
-			{
-				Vec3f ray_reflect = glm::reflect( p_ray.getDirection(), hitRecord._normal );
-				_liRecursif( p_scene, Ray(hitRecord._point ,ray_reflect), p_tMin, p_tMax, p_nbBounces++ );
+			{	
+
+				Ray ray_reflect =  Ray( hitRecord._point, glm::reflect( p_ray.getDirection(), hitRecord._normal ) );
+				ray_reflect.offset( hitRecord._normal );
+				p_nbBounces++;
+				return _liRecursif( p_scene, ray_reflect, p_tMin, p_tMax, p_nbBounces );
+			}
+			else if ( hitRecord._object->getMaterial()->isTransparent() ) {
+				
 			}
 			else
-			{
-				return _directLightingMain( p_scene, p_ray, hitRecord );
+			{			
+				return _directLightingMain( p_scene, hitRecord );
 			}
 		}
 		else
@@ -44,7 +45,7 @@ namespace RT_ISICG
 		
 	}
 
-	Vec3f WhittedIntegrator::_directLightingMain( const Scene & p_scene, const Ray & p_ray, HitRecord p_hitRecord ) const {
+	Vec3f WhittedIntegrator::_directLightingMain( const Scene & p_scene, HitRecord p_hitRecord ) const {
 		Vec3f lum;
 		Vec3f lum_list = Vec3f( 0.f );
 		for ( BaseLight * light : p_scene.getLights() )
@@ -55,8 +56,8 @@ namespace RT_ISICG
 			{
 				for ( int i = 0; i < _nbLightSamples; i++ )
 				{
-					LightSample ls	  = light->sample( p_hitRecord._point );
-					Ray			o_ray = Ray( p_hitRecord._point, -ls._direction );
+					LightSample ls = light->sample( p_hitRecord._point );
+					Ray	o_ray = Ray( p_hitRecord._point, -ls._direction );
 					o_ray.offset( p_hitRecord._normal );
 
 					if ( !p_scene.intersectAny( o_ray, 0.f, ls._distance ) )
@@ -68,8 +69,8 @@ namespace RT_ISICG
 			}
 			else
 			{
-				LightSample ls	  = light->sample( p_hitRecord._point );
-				Ray			o_ray = Ray( p_hitRecord._point, -ls._direction );
+				LightSample ls = light->sample( p_hitRecord._point );
+				Ray	o_ray = Ray( p_hitRecord._point, -ls._direction );
 				o_ray.offset( p_hitRecord._normal );
 
 				if ( !p_scene.intersectAny( o_ray, 0.f, ls._distance ) )

@@ -24,7 +24,7 @@ namespace RT_ISICG
 			return BLACK;
 		}
 
-		const bool isMirror() { return true; }
+		const bool isMirror() override { return true; }
 	};
 } // namespace RT_ISICG
 #endif // __RT_ISICG_MIRROR_MATERIAL__
