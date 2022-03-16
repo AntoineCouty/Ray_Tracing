@@ -20,7 +20,7 @@ namespace RT_ISICG
 				if (light->getSurface()) { 
 					for ( int i = 0; i < _nbLightSamples; i++ ) {
 						LightSample ls	  = light->sample( hitRecord._point );
-						Ray o_ray = Ray( hitRecord._point, -ls._direction );
+						Ray o_ray = Ray( hitRecord._point, ls._direction );
 						o_ray.offset( hitRecord._normal );
 	
 						if ( !p_scene.intersectAny( o_ray, 0.f, ls._distance ) )
@@ -33,7 +33,7 @@ namespace RT_ISICG
 				}
 				else{
 					LightSample ls	  = light->sample( hitRecord._point );
-					Ray o_ray = Ray( hitRecord._point, -ls._direction );
+					Ray o_ray = Ray( hitRecord._point, ls._direction );
 					o_ray.offset( hitRecord._normal );
 
 					if ( !p_scene.intersectAny( o_ray, 0.f, ls._distance ) )
@@ -52,7 +52,7 @@ namespace RT_ISICG
 	}
 
 	Vec3f DirectLightingIntegrator::_directLighting( Ray ray, LightSample ls, HitRecord hitRecord ) const { 
-		float angle = glm::max( 0.f, glm::dot( glm::normalize( hitRecord._normal ), glm::normalize( -ls._direction ) ) );
+		float angle = glm::max( 0.f, glm::dot( glm::normalize( hitRecord._normal ), glm::normalize( ls._direction ) ) );
 		return hitRecord._object->getMaterial()->shade( ray, hitRecord, ls ) * ls._radiance * angle; 
 	}
 } // namespace RT_ISICG

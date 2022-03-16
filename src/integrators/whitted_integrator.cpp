@@ -20,18 +20,17 @@ namespace RT_ISICG
 		HitRecord hitRecord;
 		if ( p_scene.intersect( p_ray, p_tMin, p_tMax, hitRecord ) )
 		{
-			if ( p_nbBounces == _nbBounces ) { return BLACK; }
-
+			
 			if ( hitRecord._object->getMaterial()->isMirror() )
 			{	
-
+				if ( p_nbBounces == _nbBounces ) { return BLACK; }
 				Ray ray_reflect =  Ray( hitRecord._point, glm::reflect( p_ray.getDirection(), hitRecord._normal ) );
 				ray_reflect.offset( hitRecord._normal );
 				p_nbBounces++;
 				return _liRecursif( p_scene, ray_reflect, p_tMin, p_tMax, p_nbBounces );
 			}
 			else if ( hitRecord._object->getMaterial()->isTransparent() ) {
-				
+				Ray ray_reflect = Ray( hitRecord._point, glm::reflect( p_ray.getDirection(), hitRecord._normal ) );
 			}
 			else
 			{			
@@ -57,7 +56,7 @@ namespace RT_ISICG
 				for ( int i = 0; i < _nbLightSamples; i++ )
 				{
 					LightSample ls = light->sample( p_hitRecord._point );
-					Ray	o_ray = Ray( p_hitRecord._point, -ls._direction );
+					Ray	o_ray = Ray( p_hitRecord._point, ls._direction );
 					o_ray.offset( p_hitRecord._normal );
 
 					if ( !p_scene.intersectAny( o_ray, 0.f, ls._distance ) )
@@ -70,7 +69,7 @@ namespace RT_ISICG
 			else
 			{
 				LightSample ls = light->sample( p_hitRecord._point );
-				Ray	o_ray = Ray( p_hitRecord._point, -ls._direction );
+				Ray	o_ray = Ray( p_hitRecord._point, ls._direction );
 				o_ray.offset( p_hitRecord._normal );
 
 				if ( !p_scene.intersectAny( o_ray, 0.f, ls._distance ) )
@@ -85,7 +84,7 @@ namespace RT_ISICG
 
 	Vec3f WhittedIntegrator::_directLighting( Ray ray, LightSample ls, HitRecord hitRecord ) const
 	{
-		float angle = glm::max( 0.f, glm::dot( glm::normalize( hitRecord._normal ), glm::normalize( -ls._direction ) ) );
+		float angle = glm::max( 0.f, glm::dot( glm::normalize( hitRecord._normal ), glm::normalize( ls._direction ) ) );
 		return hitRecord._object->getMaterial()->shade( ray, hitRecord, ls ) * ls._radiance * angle;
 	}
 } // namespace RT_ISICG

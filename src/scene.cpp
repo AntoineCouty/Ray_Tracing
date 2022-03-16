@@ -11,6 +11,8 @@
 #include "lights/quad_light.hpp"
 #include "lights/circle_light.hpp"
 
+#define SCENE_1
+//#define SCENE_2
 namespace RT_ISICG
 {
 	Scene::Scene() { _addMaterial( new ColorMaterial( "default", WHITE ) ); }
@@ -33,13 +35,14 @@ namespace RT_ISICG
 
 	void Scene::init()
 	{
+#ifdef SCENE_1
 		// Add objects.
-		/* _addObject( new Sphere( "Sphere1", Vec3f( 0.f, 0.f, 3.f ), 1.f ) );
+		 _addObject( new Sphere( "Sphere1", Vec3f( 0.f, 0.f, 3.f ), 1.f ) );
 		_addObject( new Plane( "Plane1", Vec3f( 0.f, -2.f, 0.f ), Vec3f( 0.f, 1.f, 0.f ) ) );
 
 		// Add materials.
 		//_addMaterial( new MicroFaceMaterial( "Grey", Vec3f( 1.f, 0.85f, 0.57f ), 0.3f, 0.5f ) );
-		_addMaterial( new MicroFaceMaterial( "Grey", GREY, 0.6f, 0.5f ) );
+		_addMaterial( new MatteMaterial( "Grey", GREY, 0.6f ) );
 		//_addMaterial(new PlasticMaterial( "Grey", GREY, 128.f ));
 		_addMaterial( new LambertMaterial( "Red", RED ) );
 
@@ -49,8 +52,9 @@ namespace RT_ISICG
 
 		_addLight(new PointLight( WHITE, 60, Vec3f( 0.f, 0.f, -2.f ) ) );
 		//_addLight( new QuadLight( WHITE, 60, Vec3f( 1.f, 10.f, -2.f ), Vec3f(2.f, 0.f, 0.f), Vec3f(0.f, 0.f, 2.f ) ) );
-		//_addLight( new QuadLight( WHITE, 60, Vec3f( -4.f, 1.f, -2.f ), Vec3f( 2.f, 0.f, 0.f ), Vec3f( 0.f, 0.f, 2.f ) ) );*/
-
+		//_addLight( new QuadLight( WHITE, 60, Vec3f( -4.f, 1.f, -2.f ), Vec3f( 2.f, 0.f, 0.f ), Vec3f( 0.f, 0.f, 2.f ) ) );
+#endif
+#ifdef SCENE_2
 		// ================================================================
 		// Add materials .
 		// ================================================================
@@ -68,7 +72,7 @@ namespace RT_ISICG
 		_addObject( new Sphere( " Sphere1 ", Vec3f( -2.f, 0.f, 3.f ), 1.5f ) );
 		 _attachMaterialToObject( " Mirror ", " Sphere1 " );
 		_addObject( new Sphere( " Sphere2 ", Vec3f( 2.f, 0.f, 3.f ), 1.5f ) );
-		_attachMaterialToObject( " WhiteMatte ", " Sphere2 " );
+		_attachMaterialToObject( " Mirror ", " Sphere2 " );
 		// Pseudo Cornell box made with infinite planes .
 		_addObject( new Plane( " PlaneGround ", Vec3f( 0.f, -3.f, 0.f ), Vec3f( 0.f, 1.f, 0.f ) ) );
 		_attachMaterialToObject( " GreyMatte ", " PlaneGround " );
@@ -79,12 +83,13 @@ namespace RT_ISICG
 		_addObject( new Plane( " PlaneRight ", Vec3f( -5.f, 0.f, 0.f ), Vec3f( 1.f, 0.f, 0.f ) ) );
 		 _attachMaterialToObject( " BlueMatte ", " PlaneRight " );
 		_addObject( new Plane( " PlaneFront ", Vec3f( 0.f, 0.f, 10.f ), Vec3f( 0.f, 0.f, -1.f ) ) );
-		_attachMaterialToObject( " MagentaMatte ", " PlaneFront " );
+		_attachMaterialToObject( " Mirror ", " PlaneFront " );
 		// ================================================================
 		// Add lights .
 		// ================================================================
 		_addLight( new PointLight( WHITE, 100.f, Vec3f( 0.f, 5.f, 0.f ) ) );
 		//_addLight(new QuadLight( WHITE, 40.f, Vec3f( 1.f, 5.f, -2.f ), Vec3f( -2.f, 0.f, 0.f ), Vec3f( 0.f, 1.f, 2.f ) ) );
+#endif
 	}
 	bool Scene::intersect( const Ray & p_ray, const float p_tMin, const float p_tMax, HitRecord & p_hitRecord ) const
 	{

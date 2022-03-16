@@ -14,17 +14,15 @@ namespace RT_ISICG
 		inline Vec3f evaluate( Ray p_ray, HitRecord hitrecod, LightSample p_ls ) const
 		{
 			Vec3f normal = hitrecod._normal;
-			Vec3f dir_I = -p_ls._direction;
+			Vec3f dir_I = p_ls._direction;
 			Vec3f dir_O	 = p_ray.getDirection();
 
-			float normal_phi = glm::atan( glm::sqrt( normal.x * normal.x + normal.y * normal.y ) / normal.z );
-			float normal_theta = glm::atan( normal.y / normal.x );
-
 			float wI_phi   = glm::atan( glm::sqrt( dir_I.x * dir_I.x + dir_I.y * dir_I.y ) / dir_I.z ) ;
-			float wI_theta = glm::atan( dir_I.y / dir_I.x );
+			float wI_theta = glm::acos( glm::dot( dir_I , normal) );
 
 			float wO_phi   = glm::atan( glm::sqrt( dir_O.x * dir_O.x + dir_O.y * dir_O.y ) / dir_O.z ) ;
-			float wO_theta = glm::atan( dir_O.y / dir_O.x ) ;
+			float wO_theta = glm::acos( glm::dot( dir_O, normal ) );
+
 
 			float sigma2 = _sigma * _sigma;
 

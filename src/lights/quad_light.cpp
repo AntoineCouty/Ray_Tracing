@@ -9,7 +9,7 @@ namespace RT_ISICG
 		Vec3f p_pos		= _position + ( _u * randomFloat() ) + ( _v * randomFloat() );
 
 		float distance	= glm::distance( p_point, p_pos );
-		Vec3f direction = glm::normalize( p_point - p_pos );
+		Vec3f direction = glm::normalize( _position - p_point );
 
 		float fac_geo  = glm::pow( distance, 2 ) / glm::dot( glm::normalize(_normal), glm::normalize(direction) );
 		float pdf	   = glm::abs(fac_geo / _area);

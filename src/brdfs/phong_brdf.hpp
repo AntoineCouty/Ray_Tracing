@@ -15,7 +15,7 @@ namespace RT_ISICG
 		inline Vec3f evaluate( Ray ray, HitRecord hitrecord, LightSample ls ) const
 		{
 			Vec3f wO	 = ray.getDirection();
-			Vec3f wI	 = -ls._direction;
+			Vec3f wI	 = ls._direction;
 			Vec3f normal = glm::normalize( hitrecord._normal );
 			Vec3f h		 = glm::normalize( wO + wI );
 			return _kd * glm::pow(glm::dot( normal, h), _s );

@@ -28,7 +28,7 @@ namespace RT_ISICG
 		void		  setBackgroundColor( const Vec3f & p_color ) { _backgroundColor = p_color; }
 
 	  protected:
-		Vec3f _backgroundColor = BLACK;
+		Vec3f _backgroundColor = RED;
 	};
 
 } // namespace RT_ISICG
