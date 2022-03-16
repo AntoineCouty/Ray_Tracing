@@ -17,11 +17,13 @@ namespace RT_ISICG
 			Vec3f dir_I = p_ls._direction;
 			Vec3f dir_O	 = p_ray.getDirection();
 
-			float wI_phi   = glm::atan( glm::sqrt( dir_I.x * dir_I.x + dir_I.y * dir_I.y ) / dir_I.z ) ;
+			
 			float wI_theta = glm::acos( glm::dot( dir_I , normal) );
-
-			float wO_phi   = glm::atan( glm::sqrt( dir_O.x * dir_O.x + dir_O.y * dir_O.y ) / dir_O.z ) ;
 			float wO_theta = glm::acos( glm::dot( dir_O, normal ) );
+
+			Vec3f normal_wO_phi = glm::normalize( normal * glm::cos( wO_theta ) );
+			Vec3f normal_wI_phi = glm::normalize( normal * glm::cos( wI_theta ) );
+			
 
 
 			float sigma2 = _sigma * _sigma;
@@ -39,7 +41,7 @@ namespace RT_ISICG
 				alpha = wO_theta;
 				beta  = wI_theta;
 			}
-			return _kd * INV_PIf * ( A + ( B * glm::max( 0.f, glm::cos( wI_phi - wO_phi ) ) * glm::sin( alpha ) * glm::tan( beta ) ) );
+			return _kd * INV_PIf * ( A + ( B * glm::max( 0.f, glm::dot( normal_wI_phi, normal_wO_phi ) ) * glm::sin( alpha ) * glm::tan( beta ) ) );
 		}
 		inline const Vec3f & getKd() const { return _kd; }
 
