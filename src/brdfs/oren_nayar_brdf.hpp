@@ -15,7 +15,7 @@ namespace RT_ISICG
 		{
 			Vec3f normal = hitrecod._normal;
 			Vec3f dir_I = p_ls._direction;
-			Vec3f dir_O	 = p_ray.getDirection();
+			Vec3f dir_O	 = -p_ray.getDirection();
 
 			
 			float wI_theta = glm::acos( glm::dot( dir_I , normal) );

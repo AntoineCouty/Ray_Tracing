@@ -22,10 +22,17 @@ namespace RT_ISICG
 							const Ray &	  p_ray,
 							const float	  p_tMin,
 							const float	  p_tMax,
-							int			  p_nbBounces ) const;
+							int			  p_nbBounces,
+							bool p_inside) const;
 		Vec3f _directLighting( Ray ray, LightSample ls, HitRecord hitrecord ) const;
-		Vec3f _directLightingMain( const Scene & p_scene, HitRecord hitrecord ) const;
-		int	  _nbLightSamples = 16;
+		Vec3f _directLightingMain( Ray p_ray, const Scene & p_scene, HitRecord hitrecord ) const;
+		float _getFresnelCoefficient( float n1,
+									  float n2,
+									  Vec3f wI_dir,
+									  Vec3f refract_dir,
+									  Vec3f p_normal,
+									  bool	use_schlick = false ) const;
+		int	  _nbLightSamples = 32;
 		int	  _nbBounces	  = 5;
 	};
 

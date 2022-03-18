@@ -25,7 +25,7 @@ namespace RT_ISICG
 	
 						if ( !p_scene.intersectAny( o_ray, 0.f, ls._distance ) )
 						{ 
-							lum += _directLighting(o_ray, ls, hitRecord ); 
+							lum += _directLighting(p_ray, ls, hitRecord ); 
 						}
 
 					}
@@ -36,7 +36,7 @@ namespace RT_ISICG
 					Ray o_ray = Ray( hitRecord._point, ls._direction );
 					o_ray.offset( hitRecord._normal );
 
-					if ( !p_scene.intersectAny( o_ray, 0.f, ls._distance ) )
+					if ( !p_scene.intersectAny( p_ray, 0.f, ls._distance ) )
 					{ 
 						lum = _directLighting(o_ray, ls, hitRecord );
 					}

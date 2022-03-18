@@ -162,6 +162,8 @@
     <ClCompile Include="src\integrators\whitted_integrator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\brdfs\blinn_phong_brdf.hpp" />
+    <ClInclude Include="src\materials\blinn_phong_material.hpp" />
     <ClInclude Include="src\materials\mirror_material.hpp" />
     <ClInclude Include="src\brdfs\lambert_brdf.hpp" />
     <ClInclude Include="src\brdfs\oren_nayar_brdf.hpp" />

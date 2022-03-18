@@ -223,5 +223,11 @@
     <ClInclude Include="src\materials\transparent_material.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\brdfs\blinn_phong_brdf.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\materials\blinn_phong_material.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

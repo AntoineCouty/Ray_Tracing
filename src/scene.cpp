@@ -2,17 +2,19 @@
 #include "materials/color_material.hpp"
 #include "materials/lambert_material.hpp"
 #include "materials/plastic_material.hpp"
+#include "materials/blinn_phong_material.hpp"
 #include "materials/micro_face_material.hpp"
 #include "materials/matte_material.hpp"
 #include "materials/mirror_material.hpp"
+#include "materials/transparent_material.hpp"
 #include "objects/sphere.hpp"
 #include "objects/plane.hpp"
 #include "lights/point_light.hpp"
 #include "lights/quad_light.hpp"
 #include "lights/circle_light.hpp"
 
-#define SCENE_1
-//#define SCENE_2
+//#define SCENE_1
+#define SCENE_2
 namespace RT_ISICG
 {
 	Scene::Scene() { _addMaterial( new ColorMaterial( "default", WHITE ) ); }
@@ -42,7 +44,7 @@ namespace RT_ISICG
 
 		// Add materials.
 		//_addMaterial( new MicroFaceMaterial( "Grey", Vec3f( 1.f, 0.85f, 0.57f ), 0.3f, 0.5f ) );
-		_addMaterial( new MatteMaterial( "Grey", GREY, 0.6f ) );
+		_addMaterial( new PlasticMaterial( "Grey", GREY, 16.f ) );
 		//_addMaterial(new PlasticMaterial( "Grey", GREY, 128.f ));
 		_addMaterial( new LambertMaterial( "Red", RED ) );
 
@@ -59,12 +61,15 @@ namespace RT_ISICG
 		// Add materials .
 		// ================================================================
 		_addMaterial( new MirrorMaterial( " Mirror " ) );
-		_addMaterial( new MicroFaceMaterial( " WhiteMatte ", WHITE, 0.6f, 0.5f ) );
-		_addMaterial( new MicroFaceMaterial( " RedMatte ", RED, 0.6f, 0.5f ) );
-		_addMaterial( new MicroFaceMaterial( " GreenMatte ", GREEN, 0.6f, 0.5f ) );
-		_addMaterial( new MicroFaceMaterial( " BlueMatte ", BLUE, 0.6f, 0.5f ) );
-		_addMaterial( new MicroFaceMaterial( " GreyMatte ", GREY, 0.6f, 0.5f ) );
-		_addMaterial( new MicroFaceMaterial( " MagentaMatte ", MAGENTA, 0.6f, 0.5f ) );
+		_addMaterial( new TransparentMaterial( " Transparent " ) );
+		//_addMaterial( new PlasticMaterial( "GreyPlastic", GREY, 16 ) );
+		//_addMaterial( new BlinnPhongMaterial( "GreyBlinnPhong", GREY, 16 ) );
+		_addMaterial( new MatteMaterial( " WhiteMatte ", WHITE, 0.6f ) );
+		_addMaterial( new MatteMaterial( " RedMatte ", RED, 0.6f ) );
+		_addMaterial( new MatteMaterial( " GreenMatte ", GREEN, 0.6f ) );
+		_addMaterial( new MatteMaterial( " BlueMatte ", BLUE, 0.6f ) );
+		_addMaterial( new MatteMaterial( " GreyMatte ", GREY, 0.6f ) );
+		_addMaterial( new MatteMaterial( " MagentaMatte ", MAGENTA, 0.6f ) );
 		// ================================================================
 		// Add objects .
 		// ================================================================
@@ -72,7 +77,7 @@ namespace RT_ISICG
 		_addObject( new Sphere( " Sphere1 ", Vec3f( -2.f, 0.f, 3.f ), 1.5f ) );
 		 _attachMaterialToObject( " Mirror ", " Sphere1 " );
 		_addObject( new Sphere( " Sphere2 ", Vec3f( 2.f, 0.f, 3.f ), 1.5f ) );
-		_attachMaterialToObject( " Mirror ", " Sphere2 " );
+		_attachMaterialToObject( " Transparent ", " Sphere2 " );
 		// Pseudo Cornell box made with infinite planes .
 		_addObject( new Plane( " PlaneGround ", Vec3f( 0.f, -3.f, 0.f ), Vec3f( 0.f, 1.f, 0.f ) ) );
 		_attachMaterialToObject( " GreyMatte ", " PlaneGround " );
@@ -83,7 +88,7 @@ namespace RT_ISICG
 		_addObject( new Plane( " PlaneRight ", Vec3f( -5.f, 0.f, 0.f ), Vec3f( 1.f, 0.f, 0.f ) ) );
 		 _attachMaterialToObject( " BlueMatte ", " PlaneRight " );
 		_addObject( new Plane( " PlaneFront ", Vec3f( 0.f, 0.f, 10.f ), Vec3f( 0.f, 0.f, -1.f ) ) );
-		_attachMaterialToObject( " Mirror ", " PlaneFront " );
+		_attachMaterialToObject( " MagentaMatte ", " PlaneFront " );
 		// ================================================================
 		// Add lights .
 		// ================================================================
