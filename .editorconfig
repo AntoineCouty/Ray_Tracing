@@ -1,0 +1,5 @@
+# Rules in this file were initially inferred by Visual Studio IntelliCode from the D:\M1__ISICG_S1\M1-S2\ISIR\RT_ISICG_etu_2022-master-89931bf989a63af4bc67b14d2aba637903bff208 codebase based on best match to current usage at 19/03/2022
+# You can modify the rules from these initially generated values to suit your own policies
+# You can learn more about editorconfig here: https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference
+[*.cs]
+

@@ -21,8 +21,30 @@ namespace RT_ISICG
 		const Vec3f & v1 = _refMesh->_vertices[ _v1 ];
 		const Vec3f & v2 = _refMesh->_vertices[ _v2 ];
 
-		/// TODO
-		return false;
+		Vec3f v0v1 = v1 - v0;
+		Vec3f v0v2 = v2 - v0;
+		Vec3f h	   = glm::cross( d, v0v2 );
+		float a	   = glm::dot( v0v1, h );
+
+		if ( a == 0.f )
+			return false;
+		
+		float f = 1.f / a;
+		Vec3f s = o - v0;
+		float u = f * glm::dot( s, h );
+
+		if ( u < 0.f || u > 1.f ) 
+			return false;
+
+		Vec3f q = glm::cross( s, v0v1 );
+		float v = f * glm::dot( q, d );
+		if ( v < 0.f || u + v > 1.f ) 
+			return false;
+
+		p_t = f * glm::dot( v0v2, q );
+		
+		return true;
+
 	}
 
 } // namespace RT_ISICG
