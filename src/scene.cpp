@@ -117,8 +117,8 @@ namespace RT_ISICG
 		// Add objects .
 		// ================================================================
 		// OBJ.
-		loadFileTriangleMesh( "low_poly_teapot", DATA_PATH + "low_poly_teapot.obj" );
-		_attachMaterialToObject( " CyanMatte ", "low_poly_teapot" );
+		loadFileTriangleMesh( "uvsphere", DATA_PATH + "uvsphere.obj" );
+		_attachMaterialToObject( " CyanMatte ", "uvsphere_defaultobject" );
 		// Pseudo Cornell box made with infinite planes .
 		_addObject( new Plane( " PlaneGround ", Vec3f( 0.f, -3.f, 0.f ), Vec3f( 0.f, 1.f, 0.f ) ) );
 		_attachMaterialToObject( " GreyMatte ", " PlaneGround " );
@@ -135,7 +135,7 @@ namespace RT_ISICG
 		// ================================================================
 		// Add lights .
 		// ================================================================
-		_addLight( new PointLight( WHITE, 100.f, Vec3f( 0.f, 5.f, 0.f ) ) );
+		_addLight( new PointLight( WHITE, 100.f, Vec3f( 0.f, 3.f, -5.f ) ) );
 #endif // SCENE_3
 
 	}
@@ -234,12 +234,14 @@ namespace RT_ISICG
 			cptTriangles += mesh->mNumFaces;
 			cptVertices += mesh->mNumVertices;
 			const bool	   hasUV   = mesh->HasTextureCoords( 0 );
+			std::cout << meshName << std::endl;
 			MeshTriangle * triMesh = new MeshTriangle( meshName );
 			// Vertices before faces otherwise face normals cannot be computed.
 			for ( unsigned int v = 0; v < mesh->mNumVertices; ++v )
 			{
 				triMesh->addVertex( mesh->mVertices[ v ].x, mesh->mVertices[ v ].y, mesh->mVertices[ v ].z );
 				triMesh->addNormal( mesh->mNormals[ v ].x, mesh->mNormals[ v ].y, mesh->mNormals[ v ].z );
+				
 				if ( hasUV ) triMesh->addUV( mesh->mTextureCoords[ 0 ][ v ].x, mesh->mTextureCoords[ 0 ][ v ].y );
 			}
 			for ( unsigned int f = 0; f < mesh->mNumFaces; ++f )

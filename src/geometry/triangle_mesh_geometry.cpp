@@ -11,9 +11,12 @@ namespace RT_ISICG
 	{
 		_faceNormal = glm::normalize( glm::cross( _refMesh->_vertices[ p_v1 ] - _refMesh->_vertices[ p_v0 ],
 												  _refMesh->_vertices[ p_v2 ] - _refMesh->_vertices[ p_v0 ] ) );
+		_v[ 0 ]		= p_v0;
+		_v[ 1 ]		= p_v1;
+		_v[ 2 ]		= p_v2;
 	}
 
-	bool TriangleMeshGeometry::intersect( const Ray & p_ray, float & p_t ) const
+	bool TriangleMeshGeometry::intersect( const Ray & p_ray, float & p_t, Vec2f & p_uv ) const
 	{
 		const Vec3f & o	 = p_ray.getOrigin();
 		const Vec3f & d	 = p_ray.getDirection();
@@ -43,6 +46,8 @@ namespace RT_ISICG
 
 		p_t = f * glm::dot( v0v2, q );
 		
+		p_uv = Vec2f( u, v );
+
 		return true;
 
 	}
