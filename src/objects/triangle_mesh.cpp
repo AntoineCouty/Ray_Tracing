@@ -14,6 +14,12 @@ namespace RT_ISICG
 		for ( size_t i = 0; i < _triangles.size(); i++ )
 		{
 			float t;
+			
+			if (!_aabb.intersect(p_ray, p_tMin, p_tMax)) { 
+				return false;
+			}
+				
+
 			if ( _triangles[ i ].intersect( p_ray, t, uv ) )
 			{
 				if ( t >= p_tMin && t <= tClosest )
@@ -39,6 +45,7 @@ namespace RT_ISICG
 
 			return true;
 		}
+		std::cout << "false" << std::endl;
 		return false;
 	}
 

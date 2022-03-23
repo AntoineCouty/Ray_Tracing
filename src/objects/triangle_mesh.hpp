@@ -4,7 +4,7 @@
 #include "base_object.hpp"
 #include "geometry/triangle_mesh_geometry.hpp"
 #include <vector>
-#include <aabb.hpp>
+#include "aabb.hpp"
 
 namespace RT_ISICG
 {
@@ -27,6 +27,8 @@ namespace RT_ISICG
 		inline void addVertex( const float p_x, const float p_y, const float p_z )
 		{
 			_vertices.emplace_back( p_x, p_y, p_z );
+			Vec3f p_point = Vec3f( p_x, p_y, p_z );
+			_aabb.extend( p_point );
 		}
 		inline void addNormal( const float p_x, const float p_y, const float p_z )
 		{
@@ -48,7 +50,7 @@ namespace RT_ISICG
 		std::vector<Vec3f>				  _normals;
 		std::vector<Vec2f>				  _uvs;
 		std::vector<TriangleMeshGeometry> _triangles;
-		AABB							  _aabb;
+		AABB 							  _aabb;
 	};
 } // namespace RT_ISICG
 

@@ -58,6 +58,7 @@ namespace RT_ISICG
 
 	// Paths.
 	const std::string RESULTS_PATH = "results/";
+	const std::string DATA_PATH	   = "data/";
 
 	// Utils.
 	static inline float intAsFloat( const int p_i )

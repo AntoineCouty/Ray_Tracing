@@ -42,7 +42,6 @@ namespace RT_ISICG
 		void _attachMaterialToObject( const std::string & p_materialName, const std::string & p_objectName );
 		void loadFileTriangleMesh( const std::string & p_name, const std::string & p_path );
 	  private:
-		std::string DATA_PATH = "data/";
 		ObjectMap	_objectMap;
 		MaterialMap _materialMap;
 		LightList	_lightList;
