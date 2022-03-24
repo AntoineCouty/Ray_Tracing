@@ -250,6 +250,7 @@ namespace RT_ISICG
 				triMesh->addTriangle( face.mIndices[ 0 ], face.mIndices[ 1 ], face.mIndices[ 2 ] );
 			}
 			_addObject( triMesh );
+			
 			const aiMaterial * const mtl = scene->mMaterials[ mesh->mMaterialIndex ];
 			if ( mtl == nullptr )
 			{

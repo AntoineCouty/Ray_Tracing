@@ -23,6 +23,10 @@ namespace RT_ISICG
 		const Vec3f & v0 = _refMesh->_vertices[ _v0 ];
 		const Vec3f & v1 = _refMesh->_vertices[ _v1 ];
 		const Vec3f & v2 = _refMesh->_vertices[ _v2 ];
+		
+		_aabb->extend( v0 );
+		_aabb->extend( v1 );
+		_aabb->extend( v2 );
 
 		Vec3f v0v1 = v1 - v0;
 		Vec3f v0v2 = v2 - v0;

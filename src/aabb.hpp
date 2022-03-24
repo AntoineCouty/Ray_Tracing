@@ -13,25 +13,19 @@ namespace RT_ISICG
 		inline const Vec3f & getMax() const { return _max; }
 		// Returns true if the AABB is degenerated.
 		inline bool isValid() const { return ( ( _min.x <= _max.x ) && ( _min.y <= _max.y ) && ( _min.z <= _max.z ) ); }
-
-
 		// Extends the AABB with a point
 		inline void extend( const Vec3f & p_v ) {
 			_max = glm::max( _max, p_v );
 			_min = glm::min( _min, p_v ); 
-			/// TODO*
 		};
-
-
 		// Extends the AABB with another AABB
-		inline void extend( const AABB & p_aabb ) {
+		inline void extend( const AABB & p_aabb )
+		{
 			Vec3f p_min = p_aabb.getMin();
 			Vec3f p_max = p_aabb.getMax();
 			_max		= glm::max( _max, p_max );
-			_min		= glm::min( _min, p_min ); 
-			/// TODO
+			_min		= glm::min( _min, p_min );
 		};
-
 		// Returns the AABB diagonal vector.
 		inline Vec3f diagonal() const { return _max - _min; }
 		// Returns the AABB centroid.

@@ -12,7 +12,8 @@ namespace RT_ISICG
 		float t_min_x = ( _min.x - origin.x ) / dir.x;
 		float t_max_x = ( _max.x - origin.x ) / dir.x;
 
-		if ( t_min_x > t_max_x ) { 
+		if ( t_min_x > t_max_x )
+		{
 			float tmp = t_min_x;
 			t_min_x	  = t_max_x;
 			t_max_x	  = tmp;
@@ -28,12 +29,10 @@ namespace RT_ISICG
 			t_max_y	  = tmp;
 		}
 
-
 		if ( t_min_x > t_max_y || t_min_y > t_max_x ) return false;
 
-		float t_min	  = glm::max( t_min_x, t_min_y );
-		float t_max	  = glm::min( t_max_x, t_max_y );
-
+		float t_min = glm::max( t_min_x, t_min_y );
+		float t_max = glm::min( t_max_x, t_max_y );
 
 		float t_min_z = ( _min.z - origin.z ) / dir.z;
 		float t_max_z = ( _max.z - origin.z ) / dir.z;
@@ -44,18 +43,16 @@ namespace RT_ISICG
 			t_min_z	  = t_max_z;
 			t_max_z	  = tmp;
 		}
-		/*std::cout << "min : " << t_min_x << " " << t_min_y << " " << t_min_z << std::endl;
-		std::cout << "max : " << t_max_x << " " << t_max_y << " " << t_max_z << std::endl;*/
-
-		if ( t_min > t_max_z || t_min_z > t_max ) 
-			return false;
 		
+
+		if ( t_min > t_max_z || t_min_z > t_max ) return false;
+
 		t_min = glm::max( t_min, t_min_z );
 		t_max = glm::min( t_max, t_max_z );
 
-		if ( t_min > p_tMin && t_max < p_tMax ) 
-			return true;
-
-		return false;
+		return ( t_min >= p_tMin && t_max <= p_tMax );
+	
 	}
+
+
 } // namespace RT_ISICG
