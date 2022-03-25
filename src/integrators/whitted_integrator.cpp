@@ -73,36 +73,26 @@ namespace RT_ISICG
 	Vec3f WhittedIntegrator::_directLightingMain(Ray p_ray, const Scene & p_scene, HitRecord p_hitRecord ) const {
 		Vec3f lum;
 		Vec3f lum_list = Vec3f( 0.f );
+		float nbLightSample;
 		for ( BaseLight * light : p_scene.getLights() )
 		{
-			lum = Vec3f( 0.f );
+			nbLightSample = 1;
+			lum			  = Vec3f( 0.f );
+			if ( light->getSurface() ) { nbLightSample = _nbLightSamples; }
 
-			if ( light->getSurface() )
+			for ( int i = 0; i < nbLightSample; i++ )
 			{
-				for ( int i = 0; i < _nbLightSamples; i++ )
-				{
-					LightSample ls = light->sample( p_hitRecord._point );
-					Ray	o_ray = Ray( p_hitRecord._point, ls._direction );
-					o_ray.offset( p_hitRecord._normal );
-
-					if ( !p_scene.intersectAny( o_ray, 0.f, ls._distance ) )
-					{
-						lum += _directLighting( p_ray, ls, p_hitRecord );
-					}
-				}
-				lum /= Vec3f( float( _nbLightSamples ) );
-			}
-			else
-			{
-				LightSample ls = light->sample( p_hitRecord._point );
-				Ray	o_ray = Ray( p_hitRecord._point, ls._direction );
+				LightSample ls	  = light->sample( p_hitRecord._point );
+				Ray			o_ray = Ray( p_hitRecord._point, ls._direction );
 				o_ray.offset( p_hitRecord._normal );
 
 				if ( !p_scene.intersectAny( o_ray, 0.f, ls._distance ) )
 				{
-					lum = _directLighting( p_ray, ls, p_hitRecord );
+					lum += _directLighting( p_ray, ls, p_hitRecord );
 				}
 			}
+			lum /= Vec3f( float( nbLightSample ) );
+
 			lum_list += lum;
 		}
 		return lum_list;

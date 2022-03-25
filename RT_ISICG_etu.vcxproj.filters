@@ -119,6 +119,9 @@
     <ClCompile Include="src\geometry\triangle_mesh_geometry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\lights\spot_light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\defines.hpp">
@@ -251,6 +254,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\geometry\triangle_mesh_geometry.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lights\spot_light.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

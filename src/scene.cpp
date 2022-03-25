@@ -12,14 +12,15 @@
 #include "lights/point_light.hpp"
 #include "lights/quad_light.hpp"
 #include "lights/circle_light.hpp"
+#include "lights/spot_light.hpp"
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
 #include <objects/triangle_mesh.hpp>
 
 //#define SCENE_1
-//#define SCENE_2
-#define SCENE_3
+#define SCENE_2
+//#define SCENE_3
 namespace RT_ISICG
 {
 	Scene::Scene() { _addMaterial( new ColorMaterial( "default", WHITE ) ); }
@@ -49,7 +50,7 @@ namespace RT_ISICG
 
 		// Add materials.
 		//_addMaterial( new MicroFaceMaterial( "Grey", Vec3f( 1.f, 0.85f, 0.57f ), 0.3f, 0.5f ) );
-		_addMaterial( new PlasticMaterial( "Grey", GREY, 16.f ) );
+		_addMaterial( new PlasticMaterial( "Grey", CYAN, 16.f ) );
 		//_addMaterial(new PlasticMaterial( "Grey", GREY, 128.f ));
 		_addMaterial( new LambertMaterial( "Red", RED ) );
 
@@ -57,8 +58,10 @@ namespace RT_ISICG
 		_attachMaterialToObject( "Grey", "Sphere1" );
 		_attachMaterialToObject( "Red", "Plane1" );
 
-		_addLight(new PointLight( WHITE, 60, Vec3f( 0.f, 0.f, -2.f ) ) );
+		//_addLight(new PointLight( WHITE, 60, Vec3f( 0.f, 0.f, -2.f ) ) );
 		//_addLight( new QuadLight( WHITE, 60, Vec3f( 1.f, 10.f, -2.f ), Vec3f(2.f, 0.f, 0.f), Vec3f(0.f, 0.f, 2.f ) ) );
+		_addLight( new SpotLight( WHITE, 20, Vec3f( 0.f, 5.f, 3.f ), Vec3f(1.f, 0.f, 0.f), Vec3f(0.f, 0.f, 1.f ), 2.f ) );
+		//_addLight( new SpotLight( WHITE, 20, Vec3f( -1.f, 5.f, 3.f ), Vec3f(1.f, 0.f, 0.f), Vec3f(0.f, 0.f, 1.f ), 2.f ) );
 		//_addLight( new QuadLight( WHITE, 60, Vec3f( -4.f, 1.f, -2.f ), Vec3f( 2.f, 0.f, 0.f ), Vec3f( 0.f, 0.f, 2.f ) ) );
 #endif // SCENE_1
 
@@ -98,8 +101,10 @@ namespace RT_ISICG
 		// ================================================================
 		// Add lights .
 		// ================================================================
-		_addLight( new PointLight( WHITE, 100.f, Vec3f( 0.f, 5.f, 0.f ) ) );
-		//_addLight(new QuadLight( WHITE, 40.f, Vec3f( 1.f, 5.f, -2.f ), Vec3f( -2.f, 0.f, 0.f ), Vec3f( 0.f, 1.f, 2.f ) ) );
+		//_addLight( new PointLight( WHITE, 100.f, Vec3f( 0.f, 5.f, 0.f ) ) );
+		//_addLight(new SpotLight( WHITE, 50, Vec3f( 0.f, 5.f, 0.f ), Vec3f( 1.f, 0.f, 0.f ), Vec3f( 0.f, 0.f, 1.f ), 2.f, 60.f ) );
+		_addLight(new QuadLight( WHITE, 40, Vec3f( 1.f, 5.f, -2.f ), Vec3f( -2.f, 0.f, 0.f ), Vec3f( 0.f, 1.f, 2.f ) ) );
+
 #endif // SCENE_2
 
 #ifdef SCENE_3
@@ -129,7 +134,7 @@ namespace RT_ISICG
 		_addObject( new Plane( " PlaneRight ", Vec3f( -5.f, 0.f, 0.f ), Vec3f( 1.f, 0.f, 0.f ) ) );
 		_attachMaterialToObject( " BlueMatte ", " PlaneRight " );
 		_addObject( new Plane( " PlaneFront ", Vec3f( 0.f, 0.f, 10.f ), Vec3f( 0.f, 0.f, -1.f ) ) );
-		_attachMaterialToObject( " MagentaMatte ", " PlaneFront " );
+		_attachMaterialToObject( " Mirror ", " PlaneFront " );
 		_addObject( new Plane( " PlaneRear ", Vec3f( 0.f, 0.f, -10.f ), Vec3f( 0.f, 0.f, 1.f ) ) );
 		_attachMaterialToObject( " YellowMatte ", " PlaneRear " );
 		// ================================================================

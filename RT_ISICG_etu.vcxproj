@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\lights\spot_light.cpp" />
     <ClCompile Include="src\aabb.cpp" />
     <ClCompile Include="src\bvh.cpp" />
     <ClCompile Include="src\geometry\triangle_mesh_geometry.cpp" />
@@ -170,6 +171,7 @@
     <ClCompile Include="src\integrators\whitted_integrator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\lights\spot_light.hpp" />
     <ClInclude Include="src\aabb.hpp" />
     <ClInclude Include="src\brdfs\blinn_phong_brdf.hpp" />
     <ClInclude Include="src\bvh.hpp" />

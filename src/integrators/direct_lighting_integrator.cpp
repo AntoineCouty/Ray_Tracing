@@ -13,34 +13,27 @@ namespace RT_ISICG
 			
 			Vec3f lum;
 			Vec3f lum_list = Vec3f(0.f);
+			int	  nbLightSample;
 			for ( BaseLight * light : p_scene.getLights() ) {
-
+				nbLightSample = 1;
 				lum = Vec3f( 0.f );
-
-				if (light->getSurface()) { 
-					for ( int i = 0; i < _nbLightSamples; i++ ) {
-						LightSample ls	  = light->sample( hitRecord._point );
-						Ray o_ray = Ray( hitRecord._point, ls._direction );
-						o_ray.offset( hitRecord._normal );
-	
-						if ( !p_scene.intersectAny( o_ray, 0.f, ls._distance ) )
-						{ 
-							lum += _directLighting(p_ray, ls, hitRecord ); 
-						}
-
-					}
-					lum /= Vec3f( float( _nbLightSamples ) );
+				if ( light->getSurface() ) { nbLightSample = _nbLightSamples;
 				}
-				else{
+				 
+				for ( int i = 0; i < nbLightSample; i++ )
+				{
 					LightSample ls	  = light->sample( hitRecord._point );
 					Ray o_ray = Ray( hitRecord._point, ls._direction );
 					o_ray.offset( hitRecord._normal );
-
-					if ( !p_scene.intersectAny( p_ray, 0.f, ls._distance ) )
+	
+					if ( !p_scene.intersectAny( o_ray, 0.f, ls._distance ) )
 					{ 
-						lum = _directLighting(o_ray, ls, hitRecord );
+						lum += _directLighting(o_ray, ls, hitRecord ); 
 					}
+
 				}
+				lum /= Vec3f( float( _nbLightSamples ) );
+				
 				lum_list += lum;
 			}
 			return lum_list;
