@@ -19,8 +19,8 @@
 #include <objects/triangle_mesh.hpp>
 
 //#define SCENE_1
-#define SCENE_2
-//#define SCENE_3
+//#define SCENE_2
+#define SCENE_3
 namespace RT_ISICG
 {
 	Scene::Scene() { _addMaterial( new ColorMaterial( "default", WHITE ) ); }
@@ -59,8 +59,8 @@ namespace RT_ISICG
 		_attachMaterialToObject( "Red", "Plane1" );
 
 		//_addLight(new PointLight( WHITE, 60, Vec3f( 0.f, 0.f, -2.f ) ) );
-		//_addLight( new QuadLight( WHITE, 60, Vec3f( 1.f, 10.f, -2.f ), Vec3f(2.f, 0.f, 0.f), Vec3f(0.f, 0.f, 2.f ) ) );
-		_addLight( new SpotLight( WHITE, 20, Vec3f( 0.f, 5.f, 3.f ), Vec3f(1.f, 0.f, 0.f), Vec3f(0.f, 0.f, 1.f ), 2.f ) );
+		_addLight( new QuadLight( WHITE, 60, Vec3f( 1.f, 10.f, -2.f ), Vec3f(2.f, 0.f, 0.f), Vec3f(0.f, 0.f, 2.f ) ) );
+		//_addLight( new SpotLight( WHITE, 20, Vec3f( 0.f, 5.f, 3.f ), Vec3f(1.f, 0.f, 0.f), Vec3f(0.f, 0.f, 1.f ), 2.f, 20.f ) );
 		//_addLight( new SpotLight( WHITE, 20, Vec3f( -1.f, 5.f, 3.f ), Vec3f(1.f, 0.f, 0.f), Vec3f(0.f, 0.f, 1.f ), 2.f ) );
 		//_addLight( new QuadLight( WHITE, 60, Vec3f( -4.f, 1.f, -2.f ), Vec3f( 2.f, 0.f, 0.f ), Vec3f( 0.f, 0.f, 2.f ) ) );
 #endif // SCENE_1
@@ -97,7 +97,7 @@ namespace RT_ISICG
 		_addObject( new Plane( " PlaneRight ", Vec3f( -5.f, 0.f, 0.f ), Vec3f( 1.f, 0.f, 0.f ) ) );
 		 _attachMaterialToObject( " BlueMatte ", " PlaneRight " );
 		_addObject( new Plane( " PlaneFront ", Vec3f( 0.f, 0.f, 10.f ), Vec3f( 0.f, 0.f, -1.f ) ) );
-		_attachMaterialToObject( " MagentaMatte ", " PlaneFront " );
+		_attachMaterialToObject( " Mirror ", " PlaneFront " );
 		// ================================================================
 		// Add lights .
 		// ================================================================
@@ -111,6 +111,7 @@ namespace RT_ISICG
 		// ================================================================
 		// Add materials .
 		// ================================================================
+		_addMaterial( new MirrorMaterial( " Mirror " ) );
 		_addMaterial( new MatteMaterial( " RedMatte ", RED, 0.6f ) );
 		_addMaterial( new MatteMaterial( " GreenMatte ", GREEN, 0.6f ) );
 		_addMaterial( new MatteMaterial( " BlueMatte ", BLUE, 0.6f ) );
@@ -134,13 +135,14 @@ namespace RT_ISICG
 		_addObject( new Plane( " PlaneRight ", Vec3f( -5.f, 0.f, 0.f ), Vec3f( 1.f, 0.f, 0.f ) ) );
 		_attachMaterialToObject( " BlueMatte ", " PlaneRight " );
 		_addObject( new Plane( " PlaneFront ", Vec3f( 0.f, 0.f, 10.f ), Vec3f( 0.f, 0.f, -1.f ) ) );
-		_attachMaterialToObject( " Mirror ", " PlaneFront " );
+		_attachMaterialToObject( " MagentaMatte ", " PlaneFront " );
 		_addObject( new Plane( " PlaneRear ", Vec3f( 0.f, 0.f, -10.f ), Vec3f( 0.f, 0.f, 1.f ) ) );
 		_attachMaterialToObject( " YellowMatte ", " PlaneRear " );
 		// ================================================================
 		// Add lights .
 		// ================================================================
 		_addLight( new PointLight( WHITE, 100.f, Vec3f( 0.f, 3.f, -5.f ) ) );
+		//_addLight( new QuadLight( WHITE, 40, Vec3f( 1.f, 5.f, -2.f ), Vec3f( -2.f, 0.f, 0.f ), Vec3f( 0.f, 1.f, 2.f ) ) );
 #endif // SCENE_3
 
 	}
@@ -254,8 +256,8 @@ namespace RT_ISICG
 				const aiFace & face = mesh->mFaces[ f ];
 				triMesh->addTriangle( face.mIndices[ 0 ], face.mIndices[ 1 ], face.mIndices[ 2 ] );
 			}
+			triMesh->buildBVH();
 			_addObject( triMesh );
-			
 			const aiMaterial * const mtl = scene->mMaterials[ mesh->mMaterialIndex ];
 			if ( mtl == nullptr )
 			{

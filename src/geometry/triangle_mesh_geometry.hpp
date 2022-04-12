@@ -23,8 +23,9 @@ namespace RT_ISICG
 
 		inline const Vec3f & getFaceNormal() const { return _faceNormal; }
 		inline const unsigned int * getIndices() const { return _v; }
-		inline MeshTriangle * getMesh() { return _refMesh; }
-		inline AABB  getAABB() { return *_aabb; }
+		inline const MeshTriangle * getMesh() const { return _refMesh; }
+		inline AABB  getAABB() { return _aabb; }
+		Vec3f getSmoothNormal( Vec2f p_uv ) const;
 
 	  private:
 		MeshTriangle * _refMesh;
@@ -38,7 +39,7 @@ namespace RT_ISICG
 		};
 
 		Vec3f _faceNormal;
-		AABB * _aabb;
+		AABB _aabb;
 	};
 } // namespace RT_ISICG
 

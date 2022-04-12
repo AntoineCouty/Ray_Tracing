@@ -50,7 +50,7 @@ namespace RT_ISICG
 
 		progressBar.start( height, 50 );
 		chrono.start();
-		#pragma omp parallel for
+		#pragma omp parallel for schedule( dynamic )
 		for ( int j = 0; j < height; j++ )
 		{
 			for ( int i = 0; i < width; i++ )

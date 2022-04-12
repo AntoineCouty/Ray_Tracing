@@ -11,6 +11,12 @@ namespace RT_ISICG
 	{
 		_faceNormal = glm::normalize( glm::cross( _refMesh->_vertices[ p_v1 ] - _refMesh->_vertices[ p_v0 ],
 												  _refMesh->_vertices[ p_v2 ] - _refMesh->_vertices[ p_v0 ] ) );
+
+		_aabb.extend( _refMesh->_vertices[ _v0 ] );
+		_aabb.extend( _refMesh->_vertices[ _v1 ] );
+		_aabb.extend( _refMesh->_vertices[ _v2 ] );
+
+
 		_v[ 0 ]		= p_v0;
 		_v[ 1 ]		= p_v1;
 		_v[ 2 ]		= p_v2;
@@ -24,9 +30,7 @@ namespace RT_ISICG
 		const Vec3f & v1 = _refMesh->_vertices[ _v1 ];
 		const Vec3f & v2 = _refMesh->_vertices[ _v2 ];
 		
-		_aabb->extend( v0 );
-		_aabb->extend( v1 );
-		_aabb->extend( v2 );
+		
 
 		Vec3f v0v1 = v1 - v0;
 		Vec3f v0v2 = v2 - v0;
@@ -51,9 +55,21 @@ namespace RT_ISICG
 		p_t = f * glm::dot( v0v2, q );
 		
 		p_uv = Vec2f( u, v );
-
+		
 		return true;
 
+	}
+
+
+	Vec3f TriangleMeshGeometry::getSmoothNormal( Vec2f p_uv ) const
+	{
+		Vec3f n0 = _refMesh->_normals[ 0 ];
+		Vec3f n1 = _refMesh->_normals[ 1 ];
+		Vec3f n2 = _refMesh->_normals[ 2 ];
+		float u	 = p_uv[ 0 ];
+		float v  = p_uv[ 1 ];
+
+		return glm::normalize( ( 1.f - u - v ) * _refMesh->_normals[ _v0 ] + u * _refMesh->_normals[ _v1 ] + v * _refMesh->_normals[ _v2 ] );
 	}
 
 } // namespace RT_ISICG

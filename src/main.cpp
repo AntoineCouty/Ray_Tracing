@@ -23,7 +23,7 @@ namespace RT_ISICG
 		Renderer renderer;
 		renderer.setIntegrator( IntegratorType::WHITTED );
 		renderer.setBackgroundColor( GREY );
-		renderer.setNbPixelSamples(32 );
+		renderer.setNbPixelSamples(1 );
 
 		// Launch rendering.
 		std::cout << "Rendering..." << std::endl;

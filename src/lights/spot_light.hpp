@@ -12,12 +12,13 @@ namespace RT_ISICG
 		SpotLight( const Vec3f & p_color,
 					 float		   p_power,
 					 const Vec3f & p_position,
-					 const Vec3f & p_u,
-					 const Vec3f & p_v,
+					 const Vec3f & p_direction,
 					 float		   p_rayon,float p_angle )
-			: BaseLight( p_color, p_power ), _position( p_position ), _u( p_u ), _v( p_v ), _rayon( p_rayon ), _angle(p_angle)
+			: BaseLight( p_color, p_power ), _position( p_position ), _direction( p_direction ),
+			  _rayon( p_rayon ),
+			  _angle( p_angle )
 		{
-			_normal	   = glm::normalize( glm::cross( _u, _v ) );
+			//_normal	   = glm::normalize( glm::cross( _u, _v ) );
 			_area	   = glm::pi<float>() * _rayon * _rayon;
 			_isSurface = true;
 		}
@@ -28,8 +29,7 @@ namespace RT_ISICG
 
 	  private:
 		Vec3f _position = VEC3F_ZERO;
-		Vec3f _u		= VEC3F_ZERO;
-		Vec3f _v		= VEC3F_ZERO;
+		Vec3f _direction = VEC3F_ZERO;
 		Vec3f _normal	= VEC3F_ZERO;
 		float _rayon	= 1.f;
 		float _area;

@@ -32,7 +32,7 @@ namespace RT_ISICG
 									  Vec3f refract_dir,
 									  Vec3f p_normal,
 									  bool	use_schlick = false ) const;
-		int	  _nbLightSamples = 128;
+		int	  _nbLightSamples = 8;
 		int	  _nbBounces	  = 5;
 	};
 
