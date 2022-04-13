@@ -142,7 +142,7 @@ namespace RT_ISICG
 		// Add lights .
 		// ================================================================
 		_addLight( new PointLight( WHITE, 100.f, Vec3f( 0.f, 3.f, -5.f ) ) );
-		//_addLight( new QuadLight( WHITE, 40, Vec3f( 1.f, 5.f, -2.f ), Vec3f( -2.f, 0.f, 0.f ), Vec3f( 0.f, 1.f, 2.f ) ) );
+		//_addLight( new QuadLight( WHITE, 20, Vec3f( 900.f, 600.f, -300.f ), Vec3f( -800.f, 0.f, 0.f ), Vec3f( 0.f, 0.f, 300.f ) ) );
 #endif // SCENE_3
 
 	}
@@ -241,7 +241,6 @@ namespace RT_ISICG
 			cptTriangles += mesh->mNumFaces;
 			cptVertices += mesh->mNumVertices;
 			const bool	   hasUV   = mesh->HasTextureCoords( 0 );
-			std::cout << meshName << std::endl;
 			MeshTriangle * triMesh = new MeshTriangle( meshName );
 			// Vertices before faces otherwise face normals cannot be computed.
 			for ( unsigned int v = 0; v < mesh->mNumVertices; ++v )
@@ -276,8 +275,8 @@ namespace RT_ISICG
 				if ( mtl->Get( AI_MATKEY_SHININESS, aiS ) == AI_SUCCESS ) s = aiS;
 				aiString mtlName;
 				mtl->Get( AI_MATKEY_NAME, mtlName );
-				//_addMaterial( new PlasticMaterial( std::string( mtlName.C_Str() ), kd, ks, s ) );
-				//_attachMaterialToObject( mtlName.C_Str(), meshName );
+				/*_addMaterial( new PlasticMaterial( std::string( mtlName.C_Str() ), kd, ks, s ) );
+				_attachMaterialToObject( mtlName.C_Str(), meshName );*/
 			}
 			std::cout << "-- [DONE] " << triMesh->getNbTriangles() << " triangles, " << triMesh->getNbVertices()
 					  << " vertices." << std::endl;

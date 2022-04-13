@@ -3,13 +3,12 @@
 namespace RT_ISICG
 {
 	Vec3f WhittedIntegrator::Li( const Scene & p_scene,
-										const Ray &	  p_ray,
-										const float	  p_tMin,
-										const float	  p_tMax ) const
+								 const Ray &   p_ray,
+								 const float   p_tMin,
+								 const float   p_tMax ) const
 	{
 		return _liRecursif( p_scene, p_ray, p_tMin, p_tMax, 0, false );
 	}
-
 
 	Vec3f WhittedIntegrator::_liRecursif( const Scene & p_scene,
 										  const Ray &	p_ray,
@@ -21,17 +20,16 @@ namespace RT_ISICG
 		HitRecord hitRecord;
 		if ( p_scene.intersect( p_ray, p_tMin, p_tMax, hitRecord ) )
 		{
-			
 			if ( hitRecord._object->getMaterial()->isMirror() )
-			{	
+			{
 				if ( p_nbBounces == _nbBounces ) { return BLACK; }
-				Ray ray_reflect =  Ray( hitRecord._point, glm::reflect( p_ray.getDirection(), hitRecord._normal ) );
+				Ray ray_reflect = Ray( hitRecord._point, glm::reflect( p_ray.getDirection(), hitRecord._normal ) );
 				ray_reflect.offset( hitRecord._normal );
 				p_nbBounces++;
 				return _liRecursif( p_scene, ray_reflect, p_tMin, p_tMax, p_nbBounces, false );
 			}
-			else if ( hitRecord._object->getMaterial()->isTransparent() ) {
-
+			else if ( hitRecord._object->getMaterial()->isTransparent() )
+			{
 				if ( p_nbBounces == _nbBounces ) { return BLACK; }
 
 				float n1, n2 = 1.f;
@@ -40,11 +38,13 @@ namespace RT_ISICG
 				Vec3f wI_dir = p_ray.getDirection();
 				p_nbBounces++;
 
-				if ( p_inside ) { 
+				if ( p_inside )
+				{
 					n1 = ior;
 					n2 = 1.f;
 				}
-				else {
+				else
+				{
 					n1 = 1.f;
 					n2 = ior;
 				}
@@ -56,21 +56,22 @@ namespace RT_ISICG
 				ray_reflect.offset( normal );
 				Vec3f reflect = _liRecursif( p_scene, ray_reflect, p_tMin, p_tMax, p_nbBounces, p_inside ) * ret;
 				ray_refract.offset( -normal );
-				return reflect+ _liRecursif( p_scene, ray_refract, p_tMin, p_tMax, p_nbBounces, !p_inside ) * ( 1 - ret );
+				return reflect
+					   + _liRecursif( p_scene, ray_refract, p_tMin, p_tMax, p_nbBounces, !p_inside ) * ( 1 - ret );
 			}
 			else
-			{			
-				return _directLightingMain(p_ray, p_scene, hitRecord );
+			{
+				return _directLightingMain( p_ray, p_scene, hitRecord );
 			}
 		}
 		else
 		{
 			return _backgroundColor;
 		}
-		
 	}
 
-	Vec3f WhittedIntegrator::_directLightingMain(Ray p_ray, const Scene & p_scene, HitRecord p_hitRecord ) const {
+	Vec3f WhittedIntegrator::_directLightingMain( Ray p_ray, const Scene & p_scene, HitRecord p_hitRecord ) const
+	{
 		Vec3f lum;
 		Vec3f lum_list = Vec3f( 0.f );
 		float nbLightSample;
@@ -111,29 +112,25 @@ namespace RT_ISICG
 													 Vec3f p_normal,
 													 bool  use_schlick ) const
 	{
-
 		float cos_theta_i = glm::dot( -wI_dir, p_normal );
 
-		if ( use_schlick ) { 
+		if ( use_schlick )
+		{
 			float R0 = ( ( n1 - n2 ) / ( n1 + n2 ) ) * ( ( n1 - n2 ) / ( n1 + n2 ) );
 			return R0 + ( 1 - R0 ) * glm::pow( 1 - cos_theta_i, 5 );
 		}
 
 		float cos_theta_t = glm::dot( refract_dir, -p_normal );
 
-		//Reflectance total
-		if ( n1 > n2 ) { 
+		// Reflectance total
+		if ( n1 > n2 )
+		{
 			float critical_angle = glm::asin( n2 / n1 );
-			if ( glm::acos( cos_theta_i ) > critical_angle ) { 
-				return 1.f;
-			}
+			if ( glm::acos( cos_theta_i ) > critical_angle ) { return 1.f; }
 		}
 
-		if ( cos_theta_i == 1.f )
-		{
-			return ( (n1 - n2 ) / (n1 + n2 ) ) * ( (n1 - n2 ) / ( n1 + n2 ) );
-		}
-		
+		if ( cos_theta_i == 1.f ) { return ( ( n1 - n2 ) / ( n1 + n2 ) ) * ( ( n1 - n2 ) / ( n1 + n2 ) ); }
+
 		float n1CosThetaI = n1 * cos_theta_i;
 		float n1CosThetaT = n1 * cos_theta_t;
 
@@ -143,8 +140,7 @@ namespace RT_ISICG
 		float Rs = ( n1CosThetaI - n2CosThetaT ) / ( n1CosThetaI + n2CosThetaT );
 
 		float Rp = ( n1CosThetaT - n2CosThetaI ) / ( n1CosThetaT + n2CosThetaI );
-		
-		return (Rs * Rs + Rp * Rp) * 0.5;
 
+		return ( Rs * Rs + Rp * Rp ) * 0.5;
 	}
 } // namespace RT_ISICG

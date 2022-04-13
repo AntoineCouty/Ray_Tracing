@@ -26,6 +26,7 @@ namespace RT_ISICG
 
 	bool BVH::intersect( const Ray & p_ray, const float p_tMin, const float p_tMax, HitRecord & p_hitRecord ) const
 	{
+		p_hitRecord._distance = p_tMax + 1;
 		return _intersectRec(_root, p_ray, p_tMin, p_tMax, p_hitRecord);
 	}
 
@@ -65,7 +66,7 @@ namespace RT_ISICG
 			p_node->_left = new BVHNode();
 			p_node->_right = new BVHNode();
 			_buildRec( p_node->_left, p_firstTriangleId, partition, p_depth + 1 );
-			_buildRec( p_node->_right, partition + 1, p_lastTriangleId, p_depth + 1 );
+			_buildRec( p_node->_right, partition, p_lastTriangleId , p_depth + 1 );
 		}
 		
 
@@ -80,8 +81,9 @@ namespace RT_ISICG
 	{
 		if ( p_node->_aabb.intersect( p_ray, p_tMin, p_tMax ) ) { 
 			if ( p_node->isLeaf() ) {
+				
 				float  tClosest = p_tMax;			 // Hit distance.
-				size_t hitTri	= p_node->_lastTriangleId; // Hit triangle id.
+				size_t hitTri	= -1; // Hit triangle id.
 				Vec2f  p_uv;
 				for ( size_t i = p_node->_firstTriangleId; i < p_node->_lastTriangleId; i++ )
 				{
@@ -96,9 +98,8 @@ namespace RT_ISICG
 						}
 					}
 				}
-				if ( hitTri != p_node->_lastTriangleId ) // Intersection found.
+				if ( hitTri != -1 && tClosest < p_hitRecord._distance ) // Intersection found.
 				{
-					std::cout << hitTri << std::endl;
 					const MeshTriangle * mesh = ( *_triangles )[ hitTri ].getMesh();
 					p_hitRecord._point	  = p_ray.pointAtT( tClosest );
 					p_hitRecord._normal = ( *_triangles )[ hitTri ].getSmoothNormal(p_uv);
@@ -110,12 +111,11 @@ namespace RT_ISICG
 				}
 				return false;
 			}
-			else
-			{
-				bool left  = _intersectRec( p_node->_left, p_ray, p_tMin, p_tMax, p_hitRecord );
-				bool right = _intersectRec( p_node->_right, p_ray, p_tMin, p_tMax, p_hitRecord );
-				return ( left || right );
-			}
+			
+			bool left  = _intersectRec( p_node->_left, p_ray, p_tMin, p_tMax, p_hitRecord );
+			bool right = _intersectRec( p_node->_right, p_ray, p_tMin, p_tMax, p_hitRecord );
+			return ( left || right );
+			
 		}
 		return false;
 	}
@@ -139,16 +139,11 @@ namespace RT_ISICG
 				}
 				return false;
 			}
-			else
-			{
-				bool left  = _intersectAnyRec( p_node->_left, p_ray, p_tMin, p_tMax );
-				bool right = _intersectAnyRec( p_node->_right, p_ray, p_tMin, p_tMax );
-				return ( left || right );
-			}
-		}
-		else 
-		{
-			return false;
+
+			bool left  = _intersectAnyRec( p_node->_left, p_ray, p_tMin, p_tMax );
+			bool right = _intersectAnyRec( p_node->_right, p_ray, p_tMin, p_tMax );
+			return ( left || right );
+			
 		}
 		return false;
 	}

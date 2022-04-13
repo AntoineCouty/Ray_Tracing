@@ -49,7 +49,7 @@ namespace RT_ISICG
 
 		t_min = glm::max( t_min, t_min_z );
 		t_max = glm::min( t_max, t_max_z );
-
+		
 		return ( t_min >= p_tMin && t_max <= p_tMax );
 	
 	}
