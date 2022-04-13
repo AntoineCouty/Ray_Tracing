@@ -63,13 +63,12 @@ namespace RT_ISICG
 
 	Vec3f TriangleMeshGeometry::getSmoothNormal( Vec2f p_uv ) const
 	{
-		Vec3f n0 = _refMesh->_normals[ 0 ];
-		Vec3f n1 = _refMesh->_normals[ 1 ];
-		Vec3f n2 = _refMesh->_normals[ 2 ];
+		Vec3f n0 = _refMesh->_normals[ _v0 ];
+		Vec3f n1 = _refMesh->_normals[ _v1 ];
+		Vec3f n2 = _refMesh->_normals[ _v2 ];
 		float u	 = p_uv[ 0 ];
 		float v  = p_uv[ 1 ];
-
-		return glm::normalize( ( 1.f - u - v ) * _refMesh->_normals[ _v0 ] + u * _refMesh->_normals[ _v1 ] + v * _refMesh->_normals[ _v2 ] );
+		return glm::normalize( ( 1.f - u - v ) * n0 + u * n1 + v * n2 );
 	}
 
 } // namespace RT_ISICG
