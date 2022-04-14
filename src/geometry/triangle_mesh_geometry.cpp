@@ -34,7 +34,7 @@ namespace RT_ISICG
 		Vec3f h	   = glm::cross( d, v0v2 );
 		float a	   = glm::dot( v0v1, h );
 
-		if ( a == 0.f ) return false;
+		if (glm::abs(a) < EPSILON ) return false;
 
 		float f = 1.f / a;
 		Vec3f s = o - v0;

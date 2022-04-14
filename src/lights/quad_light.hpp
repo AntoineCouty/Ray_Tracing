@@ -16,8 +16,9 @@ namespace RT_ISICG
 				   const Vec3f & p_v )
 			: BaseLight( p_color, p_power ), _position( p_position ), _u( p_u ), _v( p_v )
 		{
-			_normal = glm::normalize(glm::cross( _v, _u ));
-			_area	= _u.length() * _v.length();
+			Vec3f cross = glm::cross( _u, _v );
+			_normal = glm::normalize(cross);
+			_area	= glm::length(cross);
 			_isSurface = true;
 		}
 

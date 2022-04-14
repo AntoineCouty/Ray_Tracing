@@ -7,6 +7,7 @@ namespace RT_ISICG
 								  const float p_tMax,
 								  HitRecord & p_hitRecord ) const
 	{
+		
 		return _bvh.intersect( p_ray, p_tMin, p_tMax, p_hitRecord );
 	}
 

@@ -26,7 +26,7 @@ namespace RT_ISICG
 
 	bool BVH::intersect( const Ray & p_ray, const float p_tMin, const float p_tMax, HitRecord & p_hitRecord ) const
 	{
-		p_hitRecord._distance = p_tMax + 1;
+		p_hitRecord._distance = p_tMax + 1 ;
 		return _intersectRec(_root, p_ray, p_tMin, p_tMax, p_hitRecord);
 	}
 
@@ -83,8 +83,9 @@ namespace RT_ISICG
 			if ( p_node->isLeaf() ) {
 				
 				float  tClosest = p_tMax;			 // Hit distance.
-				size_t hitTri	= -1; // Hit triangle id.
+				size_t hitTri	= -1;				// Hit triangle id.
 				Vec2f  p_uv;
+				Vec2f  uv;
 				for ( size_t i = p_node->_firstTriangleId; i < p_node->_lastTriangleId; i++ )
 				{
 					float t;
@@ -95,6 +96,7 @@ namespace RT_ISICG
 						{
 							tClosest = t;
 							hitTri	 = i;
+							uv		 = p_uv;
 						}
 					}
 				}
@@ -102,7 +104,7 @@ namespace RT_ISICG
 				{
 					const MeshTriangle * mesh = ( *_triangles )[ hitTri ].getMesh();
 					p_hitRecord._point	  = p_ray.pointAtT( tClosest );
-					p_hitRecord._normal = ( *_triangles )[ hitTri ].getSmoothNormal(p_uv);
+					p_hitRecord._normal = ( *_triangles )[ hitTri ].getFaceNormal();
 					p_hitRecord.faceNormal( p_ray.getDirection() );
 					p_hitRecord._distance = tClosest;
 					p_hitRecord._object	  = mesh;
@@ -134,7 +136,10 @@ namespace RT_ISICG
 
 					if ( ( *_triangles )[ i ].intersect( p_ray, t, p_uv ) )
 					{ 
-						return true;
+						if ( t >= p_tMin && t <= p_tMax )
+						{ 
+							return true;
+						}
 					}
 				}
 				return false;

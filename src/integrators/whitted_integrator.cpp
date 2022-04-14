@@ -56,8 +56,7 @@ namespace RT_ISICG
 				ray_reflect.offset( normal );
 				Vec3f reflect = _liRecursif( p_scene, ray_reflect, p_tMin, p_tMax, p_nbBounces, p_inside ) * ret;
 				ray_refract.offset( -normal );
-				return reflect
-					   + _liRecursif( p_scene, ray_refract, p_tMin, p_tMax, p_nbBounces, !p_inside ) * ( 1 - ret );
+				return reflect + _liRecursif( p_scene, ray_refract, p_tMin, p_tMax, p_nbBounces, !p_inside ) * ( 1 - ret );
 			}
 			else
 			{
@@ -93,6 +92,7 @@ namespace RT_ISICG
 				}
 			}
 			lum /= Vec3f( float( nbLightSample ) );
+			//std::cout << lum.x << " " << lum.y << " " << lum.z << std::endl;
 
 			lum_list += lum;
 		}
@@ -102,6 +102,7 @@ namespace RT_ISICG
 	Vec3f WhittedIntegrator::_directLighting( Ray ray, LightSample ls, HitRecord hitRecord ) const
 	{
 		float angle = glm::max( 0.f, glm::dot( glm::normalize( hitRecord._normal ), glm::normalize( ls._direction ) ) );
+		//std::cout << ls._radiance.x << " " << ls._radiance.y <<  " " << ls._radiance.z << std::endl;
 		return hitRecord._object->getMaterial()->shade( ray, hitRecord, ls ) * ls._radiance * angle;
 	}
 
