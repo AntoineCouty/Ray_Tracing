@@ -86,13 +86,12 @@ namespace RT_ISICG
 				Ray			o_ray = Ray( p_hitRecord._point, ls._direction );
 				o_ray.offset( p_hitRecord._normal );
 
-				if ( !p_scene.intersectAny( o_ray, 0.f, ls._distance ) )
+				if ( !p_scene.intersectAny( o_ray, SHADOW_EPSILON, ls._distance ) )
 				{
 					lum += _directLighting( p_ray, ls, p_hitRecord );
 				}
 			}
 			lum /= Vec3f( float( nbLightSample ) );
-			//std::cout << lum.x << " " << lum.y << " " << lum.z << std::endl;
 
 			lum_list += lum;
 		}
@@ -102,7 +101,6 @@ namespace RT_ISICG
 	Vec3f WhittedIntegrator::_directLighting( Ray ray, LightSample ls, HitRecord hitRecord ) const
 	{
 		float angle = glm::max( 0.f, glm::dot( glm::normalize( hitRecord._normal ), glm::normalize( ls._direction ) ) );
-		//std::cout << ls._radiance.x << " " << ls._radiance.y <<  " " << ls._radiance.z << std::endl;
 		return hitRecord._object->getMaterial()->shade( ray, hitRecord, ls ) * ls._radiance * angle;
 	}
 

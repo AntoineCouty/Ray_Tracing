@@ -17,12 +17,11 @@ namespace RT_ISICG
 					 const HitRecord &	 p_hitRecord,
 					 const LightSample & p_lightSample ) const override
 		{
-			return _brdfLambert.evaluate() * 0.7f
-				   + _brdfBlinnPhong.evaluate( p_ray, p_hitRecord, p_lightSample ) * 0.3f;
+			return _brdfLambert.evaluate() + _brdfBlinnPhong.evaluate( p_ray, p_hitRecord, p_lightSample ) ;
 		}
 		inline const Vec3f & getFlatColor() const override
 		{
-			return _brdfLambert.getKd() * 0.7f + _brdfBlinnPhong.getKd() * 0.3f;
+			return _brdfLambert.getKd() * 0.7f + _brdfBlinnPhong.getKs() * 0.3f;
 		}
 
 	  protected:

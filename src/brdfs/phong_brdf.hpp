@@ -11,18 +11,16 @@ namespace RT_ISICG
 	{
 	  public:
 		PhongBRDF(  const Vec3f & p_ks, float p_s ) : _ks(p_ks), _s( p_s ) {};
-		// * INV_PIf : could be done in the constructor...
+		
 		inline Vec3f evaluate( Ray ray, HitRecord hitrecord, LightSample ls ) const
 		{
 			Vec3f wO	 = -ray.getDirection();
+			Vec3f wI	 = ls._direction;
 			Vec3f normal = hitrecord._normal;
 
-			float cos_theta = 1.f;
 
-			for ( int i = 0; i < _s; i++ ) {
-				cos_theta *= glm::dot( wO,  glm::normalize(glm::reflect( wO, normal )) );
-			}
-			
+			float cos_theta = glm::pow(glm::max(0.f, glm::dot( wO, glm::reflect(-wI, normal ))), _s);
+
 			return _ks * cos_theta;
 		}
 		inline const Vec3f & getKs() const { return _ks; }

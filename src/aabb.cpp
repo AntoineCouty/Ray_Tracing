@@ -9,46 +9,42 @@ namespace RT_ISICG
 		Vec3f origin = p_ray.getOrigin();
 		Vec3f dir	 = p_ray.getDirection();
 
-		float t_min_x = ( _min.x - origin.x ) / dir.x;
-		float t_max_x = ( _max.x - origin.x ) / dir.x;
+		Vec3f vecMin = ( _min - origin ) / dir;
+		Vec3f vecMax = ( _max - origin ) / dir;
+		
 
-		if ( t_min_x > t_max_x )
+		if ( vecMin.x > vecMax.x )
 		{
-			float tmp = t_min_x;
-			t_min_x	  = t_max_x;
-			t_max_x	  = tmp;
+			float tmp = vecMin.x;
+			vecMin.x  = vecMax.x;
+			vecMax.x  = tmp;
 		}
 
-		float t_min_y = ( _min.y - origin.y ) / dir.y;
-		float t_max_y = ( _max.y - origin.y ) / dir.y;
 
-		if ( t_min_y > t_max_y )
+		if ( vecMin.y > vecMax.y )
 		{
-			float tmp = t_min_y;
-			t_min_y	  = t_max_y;
-			t_max_y	  = tmp;
+			float tmp = vecMin.y;
+			vecMin.y  = vecMax.y;
+			vecMax.y  = tmp;
 		}
 
-		if ( t_min_x > t_max_y || t_min_y > t_max_x ) return false;
+		if ( vecMin.x > vecMax.y || vecMin.y > vecMax.x ) return false;
 
-		float t_min = glm::max( t_min_x, t_min_y );
-		float t_max = glm::min( t_max_x, t_max_y );
+		float t_min = glm::max( vecMin.x, vecMin.y );
+		float t_max = glm::min( vecMax.x, vecMax.y );
 
-		float t_min_z = ( _min.z - origin.z ) / dir.z;
-		float t_max_z = ( _max.z - origin.z ) / dir.z;
-
-		if ( t_min_z > t_max_z )
+		if ( vecMin.z > vecMax.z )
 		{
-			float tmp = t_min_z;
-			t_min_z	  = t_max_z;
-			t_max_z	  = tmp;
+			float tmp = vecMin.z;
+			vecMin.z  = vecMax.z;
+			vecMax.z  = tmp;
 		}
 		
 
-		if ( t_min > t_max_z || t_min_z > t_max ) return false;
+		if ( t_min > vecMax.z || vecMin.z > t_max ) return false;
 
-		t_min = glm::max( t_min, t_min_z );
-		t_max = glm::min( t_max, t_max_z );
+		t_min = glm::max( t_min, vecMin.z );
+		t_max = glm::min( t_max, vecMax.z );
 		
 		return ( t_min < p_tMax && t_max > p_tMin );
 	

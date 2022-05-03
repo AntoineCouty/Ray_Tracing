@@ -3,6 +3,7 @@
 #include "base_material.hpp"
 #include "brdfs/lambert_brdf.hpp"
 #include "brdfs/phong_brdf.hpp"
+#include "brdfs/blinn_phong_brdf.hpp"
 namespace RT_ISICG
 {
 	class PlasticMaterial : public BaseMaterial
@@ -17,7 +18,7 @@ namespace RT_ISICG
 					 const HitRecord &	 p_hitRecord,
 					 const LightSample & p_lightSample ) const override
 		{
-			return _brdfLambert.evaluate() * 0.7f + _brdfPhong.evaluate( p_ray, p_hitRecord, p_lightSample ) * 0.3f;
+			return _brdfLambert.evaluate() + _brdfPhong.evaluate( p_ray, p_hitRecord, p_lightSample );
 		}
 		inline const Vec3f & getFlatColor() const override { return _brdfLambert.getKd() * 0.7f + _brdfPhong.getKs() * 0.3f; }
 

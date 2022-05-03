@@ -26,8 +26,8 @@
 
 
 //obj selector
-//#define BUNNY
-#define CONFERENCE
+#define BUNNY
+//#define CONFERENCE
 
 
 namespace RT_ISICG
@@ -59,7 +59,7 @@ namespace RT_ISICG
 
 		// Add materials.
 		//_addMaterial( new MicroFaceMaterial( "Grey", Vec3f( 1.f, 0.85f, 0.57f ), 0.3f, 0.5f ) );
-		_addMaterial( new PlasticMaterial( "Grey", CYAN, 16.f ) );
+		_addMaterial( new PlasticMaterial( "Grey", GREY * 0.7f, WHITE*0.3f, 64.f ) );
 		//_addMaterial(new PlasticMaterial( "Grey", GREY, 128.f ));
 		_addMaterial( new LambertMaterial( "Red", RED ) );
 
@@ -67,8 +67,8 @@ namespace RT_ISICG
 		_attachMaterialToObject( "Grey", "Sphere1" );
 		_attachMaterialToObject( "Red", "Plane1" );
 
-		//_addLight(new PointLight( WHITE, 60, Vec3f( 0.f, 0.f, -2.f ) ) );
-		_addLight( new QuadLight( WHITE, 60, Vec3f( 1.f, 10.f, -2.f ), Vec3f(2.f, 0.f, 0.f), Vec3f(0.f, 0.f, 2.f ) ) );
+		_addLight(new PointLight( WHITE, 60, Vec3f( 0.f, 0.f, -2.f ) ) );
+		//_addLight( new QuadLight( WHITE, 60, Vec3f( 1.f, 10.f, -2.f ), Vec3f(2.f, 0.f, 0.f), Vec3f(0.f, 0.f, 2.f ) ) );
 		//_addLight( new SpotLight( WHITE, 20, Vec3f( 0.f, 5.f, 3.f ), Vec3f(1.f, 0.f, 0.f), Vec3f(0.f, 0.f, 1.f ), 2.f, 20.f ) );
 		//_addLight( new SpotLight( WHITE, 20, Vec3f( -1.f, 5.f, 3.f ), Vec3f(1.f, 0.f, 0.f), Vec3f(0.f, 0.f, 1.f ), 2.f ) );
 		//_addLight( new QuadLight( WHITE, 60, Vec3f( -4.f, 1.f, -2.f ), Vec3f( 2.f, 0.f, 0.f ), Vec3f( 0.f, 0.f, 2.f ) ) );
@@ -117,6 +117,7 @@ namespace RT_ISICG
 #endif // SCENE_2
 
 #ifdef SCENE_3
+	#ifdef BUNNY
 		// ================================================================
 		// Add materials .
 		// ================================================================
@@ -132,9 +133,9 @@ namespace RT_ISICG
 		// Add objects .
 		// ================================================================
 		// OBJ.
-	#ifdef BUNNY
-		loadFileTriangleMesh( "uvsphere", DATA_PATH + "bunny.obj" );
-		_attachMaterialToObject( " CyanMatte ", "uvsphere_defaultobject" );
+	
+		loadFileTriangleMesh( "bunny", DATA_PATH + "bunny.obj" );
+		_attachMaterialToObject( " CyanMatte ", "bunny_defaultobject" );
 		// Pseudo Cornell box made with infinite planes .
 		_addObject( new Plane( " PlaneGround ", Vec3f( 0.f, -3.f, 0.f ), Vec3f( 0.f, 1.f, 0.f ) ) );
 		_attachMaterialToObject( " GreyMatte ", " PlaneGround " );
@@ -148,6 +149,7 @@ namespace RT_ISICG
 		_attachMaterialToObject( " MagentaMatte ", " PlaneFront " );
 		_addObject( new Plane( " PlaneRear ", Vec3f( 0.f, 0.f, -10.f ), Vec3f( 0.f, 0.f, 1.f ) ) );
 		_attachMaterialToObject( " YellowMatte ", " PlaneRear " );
+		_addLight( new PointLight( WHITE, 100.f, Vec3f( 0.f, 5.f, 0.f ) ) );
 	#endif // BUNNY
 
 	#ifdef CONFERENCE
@@ -159,8 +161,8 @@ namespace RT_ISICG
 		// ================================================================
 		// Add lights .
 		// ================================================================
-		//_addLight( new PointLight( WHITE, 4800000.f, Vec3f( 900.f, 600.f, -300.f ) ) );
-		_addLight( new QuadLight( WHITE, 20.f, Vec3f( 900.f, 600.f, -300.f ), Vec3f( -800.f, 0.f, 0.f ), Vec3f( 0.f, 0.f, 300.f ) ) );
+		//_addLight( new PointLight( WHITE, 100.f, Vec3f( 900.f, 600.f, -300.f ) ) );
+		//_addLight( new QuadLight( WHITE, 20.f, Vec3f( 900.f, 600.f, -300.f ), Vec3f( -800.f, 0.f, 0.f ), Vec3f( 0.f, 0.f, 300.f ) ) );
 		//_addLight( new QuadLight( WHITE, 40, Vec3f( 1.f, 5.f, -2.f ), Vec3f( -2.f, 0.f, 0.f ), Vec3f( 0.f, 1.f, 2.f ) ) );
 #endif // SCENE_3
 

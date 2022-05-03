@@ -104,7 +104,7 @@ namespace RT_ISICG
 				{
 					const MeshTriangle * mesh = ( *_triangles )[ hitTri ].getMesh();
 					p_hitRecord._point	  = p_ray.pointAtT( tClosest );
-					p_hitRecord._normal = ( *_triangles )[ hitTri ].getFaceNormal();
+					p_hitRecord._normal = ( *_triangles )[ hitTri ].getSmoothNormal(uv);
 					p_hitRecord.faceNormal( p_ray.getDirection() );
 					p_hitRecord._distance = tClosest;
 					p_hitRecord._object	  = mesh;
@@ -145,9 +145,8 @@ namespace RT_ISICG
 				return false;
 			}
 
-			bool left  = _intersectAnyRec( p_node->_left, p_ray, p_tMin, p_tMax );
-			bool right = _intersectAnyRec( p_node->_right, p_ray, p_tMin, p_tMax );
-			return ( left || right );
+			
+			return ( _intersectAnyRec( p_node->_left, p_ray, p_tMin, p_tMax ) || _intersectAnyRec( p_node->_right, p_ray, p_tMin, p_tMax ) );
 			
 		}
 		return false;
