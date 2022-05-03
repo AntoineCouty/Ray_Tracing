@@ -172,6 +172,7 @@
     <ClCompile Include="src\integrators\whitted_integrator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\objects\implicit_sphere.hpp" />
     <ClInclude Include="src\objects\implicit_surface.hpp" />
     <ClInclude Include="src\lights\spot_light.hpp" />
     <ClInclude Include="src\aabb.hpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="src\materials\micro_face_material.hpp" />
     <ClInclude Include="src\materials\plastic_material.hpp" />
     <ClInclude Include="src\materials\transparent_material.hpp" />
+    <ClInclude Include="src\objects\implicit_torus.hpp" />
     <ClInclude Include="src\objects\plane.hpp" />
     <ClInclude Include="src\geometry\plane_geometry.hpp" />
     <ClInclude Include="src\cameras\base_camera.hpp" />

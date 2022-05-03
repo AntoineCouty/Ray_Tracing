@@ -265,5 +265,11 @@
     <ClInclude Include="src\objects\implicit_surface.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\objects\implicit_sphere.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\implicit_torus.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
