@@ -10,6 +10,7 @@
 #include "objects/sphere.hpp"
 #include "objects/plane.hpp"
 #include "objects/implicit_sphere.hpp"
+#include "objects/implicit_torus.hpp"
 #include "lights/point_light.hpp"
 #include "lights/quad_light.hpp"
 #include "lights/circle_light.hpp"
@@ -57,7 +58,7 @@ namespace RT_ISICG
 		// Add objects.
 		// _addObject( new Sphere( "Sphere1", Vec3f( 0.f, 0.f, 3.f ), 1.f ) );
 		_addObject( new ImplicitSphere( "Sphere1", Vec3f( 0.f, 0.f, 3.f ), 1.f ) );
-		_addObject( new ImplicitSphere( "Sphere2", Vec3f( 2.f, 0.f, 3.f ), 1.f ) );
+		_addObject( new ImplicitTorus( "Sphere2", Vec3f( 0.f, 2.f, 3.f ), 2.f, 1.f ) );
 
 		_addObject( new Plane( "Plane1", Vec3f( 0.f, -2.f, 0.f ), Vec3f( 0.f, 1.f, 0.f ) ) );
 

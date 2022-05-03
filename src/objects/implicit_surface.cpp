@@ -18,7 +18,6 @@ namespace RT_ISICG
 			p_next		= p_ray.pointAtT( dist );
 			distAtPoint	   = _sdf( p_next );
 			dist += distAtPoint;
-			
 			nbIter++;
 		}
 
@@ -37,15 +36,16 @@ namespace RT_ISICG
 
 	bool ImplicitSurface::intersectAny( const Ray & p_ray, const float p_tMin, const float p_tMax ) const
 	{
-		float dist		  = _sdf( p_ray.getOrigin() );
-		Vec3f p_next	  = p_ray.pointAtT( dist );
+		float dist = _sdf( p_ray.getOrigin() );
+		Vec3f p_next;
 		float distAtPoint = dist;
 		int	  nbIter	  = 0;
+
 		while ( distAtPoint > _minDistance && dist < p_tMax && nbIter < _maxIter )
 		{
+			p_next		= p_ray.pointAtT( dist );
 			distAtPoint = _sdf( p_next );
 			dist += distAtPoint;
-			p_next = p_ray.pointAtT( dist );
 			nbIter++;
 		}
 
