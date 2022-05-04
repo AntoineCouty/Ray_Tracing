@@ -11,6 +11,7 @@
 #include "objects/plane.hpp"
 #include "objects/implicit_sphere.hpp"
 #include "objects/implicit_torus.hpp"
+#include "objects/mandlebulb.hpp"
 #include "lights/point_light.hpp"
 #include "lights/quad_light.hpp"
 #include "lights/circle_light.hpp"
@@ -22,9 +23,9 @@
 
 
 //scene selector
-#define SCENE_1
+//#define SCENE_1
 //#define SCENE_2
-//#define SCENE_3
+#define SCENE_3
 
 
 //obj selector
@@ -58,11 +59,13 @@ namespace RT_ISICG
 		// Add objects.
 		// _addObject( new Sphere( "Sphere1", Vec3f( 0.f, 0.f, 3.f ), 1.f ) );
 		_addObject( new ImplicitSphere( "Sphere1", Vec3f( 0.f, 0.f, 3.f ), 1.f ) );
-		_addObject( new ImplicitTorus( "Sphere2", Vec3f( 0.f, 2.f, 3.f ), 2.f, 1.f ) );
+		_addObject( new ImplicitTorus( "Sphere2", Vec3f( 0.f, 2.f, 3.f ), 1.f, 0.2f ) );
 
 		_addObject( new Plane( "Plane1", Vec3f( 0.f, -2.f, 0.f ), Vec3f( 0.f, 1.f, 0.f ) ) );
 
 		// Add materials.
+		// _addMaterial( new MirrorMaterial( " Mirror " ) );
+		_addMaterial( new TransparentMaterial( " Transparent " ) );
 		//_addMaterial( new MicroFaceMaterial( "Grey", Vec3f( 1.f, 0.85f, 0.57f ), 0.3f, 0.5f ) );
 		_addMaterial( new PlasticMaterial( "Grey", GREY * 0.7f, WHITE*0.3f, 64.f ) );
 		//_addMaterial(new PlasticMaterial( "Grey", GREY, 128.f ));
@@ -71,7 +74,7 @@ namespace RT_ISICG
 
 		// Link objects and materials.
 		_attachMaterialToObject( "blue", "Sphere1" );
-		_attachMaterialToObject( "blue", "Sphere2" );
+		_attachMaterialToObject( "Transparent", "Sphere2" );
 		_attachMaterialToObject( "Red", "Plane1" );
 
 		_addLight(new PointLight( WHITE, 60, Vec3f( 0.f, 2.f, -1.f ) ) );
@@ -85,38 +88,36 @@ namespace RT_ISICG
 		// ================================================================
 		// Add materials .
 		// ================================================================
-		_addMaterial( new MirrorMaterial( " Mirror " ) );
-		_addMaterial( new TransparentMaterial( " Transparent " ) );
+		_addMaterial( new MirrorMaterial( "Mirror" ) );
+		_addMaterial( new TransparentMaterial( "Transparent" ) );
 		_addMaterial( new PlasticMaterial( "GreyPlastic", GREY, GREY, 16 ) );
 		//_addMaterial( new BlinnPhongMaterial( "GreyBlinnPhong", GREY, 16 ) );
-		_addMaterial( new MatteMaterial( " WhiteMatte ", WHITE, 0.6f ) );
-		_addMaterial( new MatteMaterial( " RedMatte ", RED, 0.6f ) );
-		_addMaterial( new MatteMaterial( " GreenMatte ", GREEN, 0.6f ) );
-		_addMaterial( new MatteMaterial( " BlueMatte ", BLUE, 0.6f ) );
-		_addMaterial( new MatteMaterial( " GreyMatte ", GREY, 0.6f ) );
-		_addMaterial( new MatteMaterial( " MagentaMatte ", MAGENTA, 0.6f ) );
+		_addMaterial( new MatteMaterial( "WhiteMatte", WHITE, 0.6f ) );
+		_addMaterial( new MatteMaterial( "RedMatte", RED, 0.6f ) );
+		_addMaterial( new MatteMaterial( "GreenMatte", GREEN, 0.6f ) );
+		_addMaterial( new MatteMaterial( "BlueMatte", BLUE, 0.6f ) );
+		_addMaterial( new MatteMaterial( "GreyMatte", GREY, 0.6f ) );
+		_addMaterial( new MatteMaterial( "MagentaMatte", MAGENTA, 0.6f ) );
 		// ================================================================
 		// Add objects .
 		// ================================================================
 		// Spheres .
-		/*_addObject( new Sphere( " Sphere1 ", Vec3f( -2.f, 0.f, 3.f ), 1.5f ) );
-		 _attachMaterialToObject( " Mirror ", " Sphere1 " );
-		_addObject( new Sphere( " Sphere2 ", Vec3f( 2.f, 0.f, 3.f ), 1.5f ) );
-		_attachMaterialToObject( " Transparent ", " Sphere2 " );*/
 
-		_addObject( new ImplicitSphere( " Sphere1 ", Vec3f( -2.f, 0.f, 3.f ), 1.5f ) );
-		_attachMaterialToObject( "GreyPlastic", " Sphere1 " );
+
+		_addObject( new ImplicitSphere( "Sphere1", Vec3f( -2.f, 0.f, 3.f ), 1.5f ) );
+		_addObject( new Mandlebulb( "Torus", Vec3f( 0.f, 0.f, 3.f ) ) );
+		_attachMaterialToObject( "GreyMatte", "Torus" );
 		// Pseudo Cornell box made with infinite planes .
-		_addObject( new Plane( " PlaneGround ", Vec3f( 0.f, -3.f, 0.f ), Vec3f( 0.f, 1.f, 0.f ) ) );
-		_attachMaterialToObject( " GreyMatte ", " PlaneGround " );
-		_addObject( new Plane( " PlaneLeft ", Vec3f( 5.f, 0.f, 0.f ), Vec3f( -1.f, 0.f, 0.f ) ) );
-		_attachMaterialToObject( " RedMatte ", " PlaneLeft " );
-		_addObject( new Plane( " PlaneCeiling ", Vec3f( 0.f, 7.f, 0.f ), Vec3f( 0.f, -1.f, 0.f ) ) );
-		_attachMaterialToObject( " GreenMatte ", " PlaneCeiling " );
-		_addObject( new Plane( " PlaneRight ", Vec3f( -5.f, 0.f, 0.f ), Vec3f( 1.f, 0.f, 0.f ) ) );
-		 _attachMaterialToObject( " BlueMatte ", " PlaneRight " );
-		_addObject( new Plane( " PlaneFront ", Vec3f( 0.f, 0.f, 10.f ), Vec3f( 0.f, 0.f, -1.f ) ) );
-		_attachMaterialToObject( " Mirror ", " PlaneFront " );
+		_addObject( new Plane( "PlaneGround", Vec3f( 0.f, -3.f, 0.f ), Vec3f( 0.f, 1.f, 0.f ) ) );
+		_attachMaterialToObject( "GreyMatte", "PlaneGround" );
+		_addObject( new Plane( "PlaneLeft", Vec3f( 5.f, 0.f, 0.f ), Vec3f( -1.f, 0.f, 0.f ) ) );
+		_attachMaterialToObject( "RedMatte", "PlaneLeft" );
+		_addObject( new Plane( "PlaneCeiling", Vec3f( 0.f, 7.f, 0.f ), Vec3f( 0.f, -1.f, 0.f ) ) );
+		_attachMaterialToObject( "GreenMatte", "PlaneCeiling" );
+		_addObject( new Plane( "PlaneRight", Vec3f( -5.f, 0.f, 0.f ), Vec3f( 1.f, 0.f, 0.f ) ) );
+		 _attachMaterialToObject( "BlueMatte", "PlaneRight" );
+		_addObject( new Plane( "PlaneFront", Vec3f( 0.f, 0.f, 10.f ), Vec3f( 0.f, 0.f, -1.f ) ) );
+		_attachMaterialToObject( "Mirror", "PlaneFront" );
 		// ================================================================
 		// Add lights .
 		// ================================================================
@@ -171,8 +172,8 @@ namespace RT_ISICG
 		// ================================================================
 		// Add lights .
 		// ================================================================
-		_addLight( new PointLight( WHITE, 100.f, Vec3f( 900.f, 600.f, -300.f ) ) );
-		//_addLight( new QuadLight( WHITE, 20.f, Vec3f( 900.f, 600.f, -300.f ), Vec3f( -800.f, 0.f, 0.f ), Vec3f( 0.f, 0.f, 300.f ) ) );
+		//_addLight( new PointLight( WHITE, 100.f, Vec3f( 900.f, 600.f, -300.f ) ) );
+		_addLight( new QuadLight( WHITE, 20.f, Vec3f( 900.f, 600.f, -300.f ), Vec3f( -800.f, 0.f, 0.f ), Vec3f( 0.f, 0.f, 300.f ) ) );
 		//_addLight( new QuadLight( WHITE, 40, Vec3f( 1.f, 5.f, -2.f ), Vec3f( -2.f, 0.f, 0.f ), Vec3f( 0.f, 1.f, 2.f ) ) );
 #endif // SCENE_3
 

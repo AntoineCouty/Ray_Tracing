@@ -26,6 +26,14 @@ namespace RT_ISICG
 		unsigned int _lastTriangleId  = 0;
 	};
 
+	struct SAH
+	{
+		SAH() = default;
+		float		 _note		   = 50000000;
+		unsigned int _lastIdLeft = 0;
+		unsigned int _firstIdRight = 0;
+	};
+
 	class BVH
 	{
 	  public:
@@ -56,6 +64,10 @@ namespace RT_ISICG
 							   const Ray &	   p_ray,
 							   const float	   p_tMin,
 							   const float	   p_tMax ) const;
+		Vec2i _findPartition( BVHNode * p_node ) const;
+
+		float _computeTotalArea( int p_first, int p_last ) const;
+		float _computeTotalArea( AABB aabb ) const;
 
 	  private:
 		std::vector<TriangleMeshGeometry> * _triangles = nullptr;

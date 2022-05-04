@@ -55,21 +55,73 @@ namespace RT_ISICG
 
 			size_t axe = p_node->_aabb.largestAxis();
 			
-			const unsigned int partition = (p_firstTriangleId + p_lastTriangleId)*0.5;
+			
 			
 			std::partial_sort( _triangles->begin() + p_firstTriangleId,
 							   _triangles->begin() + p_lastTriangleId,
 							   _triangles->begin() + p_lastTriangleId,
 							   [ axe ](  TriangleMeshGeometry & a, TriangleMeshGeometry & b)->bool{ return a.getAABB().centroid()[ axe ] < b.getAABB().centroid()[ axe ];});
 
-
+			Vec2i partition = _findPartition( p_node );
+			//std::cout <<p_firstTriangleId << " "  << partition[ 0 ] << " " << partition[ 1 ] << " " << p_lastTriangleId << std::endl;
 			p_node->_left = new BVHNode();
 			p_node->_right = new BVHNode();
-			_buildRec( p_node->_left, p_firstTriangleId, partition, p_depth + 1 );
-			_buildRec( p_node->_right, partition, p_lastTriangleId , p_depth + 1 );
+			_buildRec( p_node->_left, p_firstTriangleId, partition[0], p_depth + 1 );
+			_buildRec( p_node->_right, partition[1], p_lastTriangleId , p_depth + 1 );
 		}
 		
 
+	}
+
+	Vec2i BVH::_findPartition( BVHNode * p_node ) const { 
+
+		SAH * sah = new SAH();
+		float size		= ( p_node->_lastTriangleId - p_node->_firstTriangleId );
+		//std::cout << p_node->_firstTriangleId << " " << p_node->_lastTriangleId << " " << size * 0.5 << std::endl;
+		float sa_parent = _computeTotalArea(p_node->_aabb);
+		float sa_right;
+		float sa_left;
+		float note;
+		for ( int i = p_node->_firstTriangleId + size*0.4 ; i < p_node->_lastTriangleId - size*0.4 ; i++ )
+		{
+			sa_right = _computeTotalArea( i, p_node->_lastTriangleId );
+
+			for ( int j = i; j < i + _maxTrianglesPerLeaf; j++ )
+			{
+				sa_left = _computeTotalArea( p_node->_firstTriangleId, j );
+				note = ( sa_left * ( j - p_node->_firstTriangleId ) + sa_right * ( p_node->_lastTriangleId - i ) ) / sa_parent;
+				//std::cout << note << std::endl;
+				if ( note < sah->_note ) { 
+					//std::cout << j << " " << i << " " << note << std::endl;
+					sah->_note = note;
+					sah->_lastIdLeft = j;
+					sah->_firstIdRight = i;
+				}
+			}
+		}
+		Vec2i lastId = { sah->_lastIdLeft, sah->_firstIdRight };
+		return lastId;
+	}
+
+	float BVH::_computeTotalArea(int p_first, int p_last) const {
+
+		AABB aabb;
+		for ( int i = p_first; i < p_last; i++ )
+		{
+			aabb.extend( ( *_triangles )[ i ].getAABB() );
+		}
+
+		Vec3f diag = aabb.diagonal();
+
+		return 2.f * ( diag.x * diag.y + diag.x * diag.z + diag.y * diag.z );
+	}
+
+	float BVH::_computeTotalArea( AABB aabb ) const
+	{
+		
+		Vec3f diag = aabb.diagonal();
+
+		return 2.f * ( diag.x * diag.y + diag.x * diag.z + diag.y * diag.z );
 	}
 
 
