@@ -23,14 +23,15 @@
 
 
 //scene selector
-//#define SCENE_1
-//#define SCENE_2
-//#define SCENE_3
-#define SCENE_4
-//#define SCENE_5
+//#define SCENE_LIGHTING
+//#define SCENE_REFRACT
+//#define SCENE_ALL_MATERIAL
+#define SCENE_PATH_TRACE
+//#define SCENE_IMPLICIT
+//#define SCENE_MESH
 
 
-//obj selector for scene 3
+//obj selector for SCENE_MESH
 #define BUNNY
 //#define CONFERENCE
 
@@ -125,7 +126,7 @@ namespace RT_ISICG
 
 #endif // SCENE_2
 
-#ifdef SCENE_3
+#ifdef SCENE_ALL_MATERIAL
 		// ================================================================
 		// Add materials .
 		// ================================================================
@@ -176,7 +177,7 @@ namespace RT_ISICG
 		 _addLight(new QuadLight( WHITE, 40, Vec3f( 3.5f, 3.5f, -5.f ), Vec3f( -2.f, 0.f, 0.f ), Vec3f(0.f, 2.f, 0.f ) ) );
 #endif // SCENE_3
 
-#ifdef SCENE_4
+#ifdef SCENE_PATH_TRACE
 		 // ================================================================
 		 // Add materials .
 		 // ================================================================
@@ -197,10 +198,70 @@ namespace RT_ISICG
 		 // Add objects .
 		 // ================================================================
 		
-		 _addObject( new Mandlebulb( "MandleBulb", Vec3f( 2.f, 0.f, 3.f )) );
+		 _addObject( new Sphere( "Sphere1", Vec3f( -2.f, 0.f, 3.f ), 1.5f ) );
+		 _addObject( new Sphere( "Sphere2", Vec3f( 2.f, 0.f, 3.f ), 1.5f ) );
+		 _addObject( new Sphere( "SphereLight", Vec3f( 0.f, 5.f, 3.f ), 0.5f ) );
+
 		 //_addObject( new ImplicitTorus( "Torus", Vec3f( -2.f, 0.f, 3.f ), 1.5f, 0.5f ) );
+
+		 _attachMaterialToObject( "Transparent", "Sphere1" );
+		 _attachMaterialToObject( "TransparentAppro", "Sphere2" );
+		 _attachMaterialToObject( "GreyPlastic", "SphereLight" );
+
+		 // Pseudo Cornell box made with infinite planes .
+		 _addObject( new Plane( "PlaneGround", Vec3f( 0.f, -3.f, 0.f ), Vec3f( 0.f, 1.f, 0.f ) ) );
+		 _attachMaterialToObject( "GreyMatte", "PlaneGround" );
+		 _addObject( new Plane( "PlaneLeft", Vec3f( 5.f, 0.f, 0.f ), Vec3f( -1.f, 0.f, 0.f ) ) );
+		 _attachMaterialToObject( "RedMatte", "PlaneLeft" );
+		 _addObject( new Plane( "PlaneCeiling", Vec3f( 0.f, 7.f, 0.f ), Vec3f( 0.f, -1.f, 0.f ) ) );
+		 _attachMaterialToObject( "GreenMatte", "PlaneCeiling" );
+		 _addObject( new Plane( "PlaneRight", Vec3f( -5.f, 0.f, 0.f ), Vec3f( 1.f, 0.f, 0.f ) ) );
+		 _attachMaterialToObject( "BlueMatte", "PlaneRight" );
+		 _addObject( new Plane( "PlaneFront", Vec3f( 0.f, 0.f, 10.f ), Vec3f( 0.f, 0.f, -1.f ) ) );
+		 _attachMaterialToObject( "MagentaMatte", "PlaneFront" );
+		 _addObject( new Plane( " PlaneRear ", Vec3f( 0.f, 0.f, -10.f ), Vec3f( 0.f, 0.f, 1.f ) ) );
+		 _attachMaterialToObject( "CyanMatte", " PlaneRear " );
+		 // ================================================================
+		 // Add lights .
+		 // ================================================================
+		 _addLight( new PointLight( WHITE, 100.f, Vec3f( 0.f, 5.f, 0.f ) ) );
+		 //_addLight(new SpotLight( WHITE, 50, Vec3f( 0.f, 5.f, 0.f ), Vec3f( 1.f, 0.f, 0.f ), Vec3f( 0.f, 0.f, 1.f
+		 //), 2.f, 60.f ) );
+		 //_addLight(new QuadLight( WHITE, 40, Vec3f( 1.f, 5.f, -2.f ), Vec3f( -2.f, 0.f, 0.f ), Vec3f( 0.f, 1.f, 2.f ) ) );
+
+#endif // SCENE_4
+
+		 
+#ifdef SCENE_IMPLICIT
+		 // ================================================================
+		 // Add materials .
+		 // ================================================================
+		 _addMaterial( new MirrorMaterial( "Mirror" ) );
+		 _addMaterial( new TransparentMaterial( "Transparent", false ) );
+		 _addMaterial( new TransparentMaterial( "TransparentAppro", true ) );
+		 _addMaterial( new PlasticMaterial( "GreyPlastic", GREY, GREY, 16 ) );
+		 _addMaterial( new MicroFaceMaterial( "Micro", Vec3f( 1.f, 0.85f, 0.57f ), 0.6f, 0.7f ) );
+		 //_addMaterial( new BlinnPhongMaterial( "GreyBlinnPhong", GREY, 16 ) );
+		 _addMaterial( new MatteMaterial( "WhiteMatte", WHITE, 0.6f ) );
+		 _addMaterial( new MatteMaterial( "RedMatte", RED, 0.6f ) );
+		 _addMaterial( new MatteMaterial( "GreenMatte", GREEN, 0.6f ) );
+		 _addMaterial( new MatteMaterial( "BlueMatte", BLUE, 0.6f ) );
+		 _addMaterial( new MatteMaterial( "GreyMatte", GREY, 0.6f ) );
+		 _addMaterial( new MatteMaterial( "MagentaMatte", MAGENTA, 0.6f ) );
+		 _addMaterial( new MatteMaterial( "CyanMatte", CYAN, 0.6f ) );
+		 // ================================================================
+		 // Add objects .
+		 // ================================================================
+
+		 _addObject( new ImplicitSphere( "Sphere", Vec3f( -2.f, 0.f, 3.f ), 1.5f ) );
+		 _addObject( new ImplicitTorus( "Torus", Vec3f( 2.f, 0.f, 3.f ), 1.5f, 0.5f ) );
+		 _addObject( new Mandlebulb( "MandleBulb", Vec3f( 0.f, 0.f, 1.f ) ) );
+
+		 //_addObject( new ImplicitTorus( "Torus", Vec3f( -2.f, 0.f, 3.f ), 1.5f, 0.5f ) );
+
+		 _attachMaterialToObject( "CyanMatte", "Sphere" );
+		 _attachMaterialToObject( "CyanMatte", "Torus" );
 		 _attachMaterialToObject( "Micro", "MandleBulb" );
-		 //_attachMaterialToObject( "CyanMatte", "Torus" );
 
 		 // Pseudo Cornell box made with infinite planes .
 		 _addObject( new Plane( "PlaneGround", Vec3f( 0.f, -3.f, 0.f ), Vec3f( 0.f, 1.f, 0.f ) ) );
@@ -221,9 +282,13 @@ namespace RT_ISICG
 		 //_addLight( new PointLight( WHITE, 100.f, Vec3f( 0.f, 5.f, 0.f ) ) );
 		 //_addLight(new SpotLight( WHITE, 50, Vec3f( 0.f, 5.f, 0.f ), Vec3f( 1.f, 0.f, 0.f ), Vec3f( 0.f, 0.f, 1.f
 		 //), 2.f, 60.f ) );
-		 _addLight(new QuadLight( WHITE, 40, Vec3f( 1.f, 5.f, -2.f ), Vec3f( -2.f, 0.f, 0.f ), Vec3f( 0.f, 1.f, 2.f ) ) );
+		 _addLight(
+			 new QuadLight( WHITE, 40, Vec3f( 1.f, 5.f, -2.f ), Vec3f( -2.f, 0.f, 0.f ), Vec3f( 0.f, 1.f, 2.f ) ) );
 
 #endif // SCENE_4
+
+
+
 #ifdef SCENE_5
 	#ifdef BUNNY
 		// ================================================================

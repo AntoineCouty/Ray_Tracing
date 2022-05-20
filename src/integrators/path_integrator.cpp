@@ -70,7 +70,7 @@ namespace RT_ISICG
 			}
 			
 			
-			//Vec3f direct =  _directLightingMain( p_ray, p_scene, hitRecord );
+			Vec3f direct =  _directLightingMain( p_ray, p_scene, hitRecord );
 			Vec3f indirect = VEC3F_ZERO;
 				
 				
@@ -95,7 +95,7 @@ namespace RT_ISICG
 							* _indirectLighting( p_ray.getDirection(), dir, hitRecord ) * PI_2f;
 			}
 			indirect /= _nbPath;
-			return indirect;
+			return direct + indirect;
 			
 		}
 		else
@@ -132,31 +132,6 @@ namespace RT_ISICG
 		return lum_list;
 	}
 
-	/*Vec3f PathIntegrator::_indirectLightingMain( Ray p_ray, const Scene & p_scene, HitRecord p_hitRecord ) const
-	{
-		Vec3f lum;
-		Vec3f lum_list = Vec3f( 0.f );
-		float nbLightSample;
-		for ( BaseLight * light : p_scene.getLights() )
-		{
-			nbLightSample = 1;
-			lum			  = Vec3f( 0.f );
-			if ( light->getSurface() ) { nbLightSample = _nbLightSamples; }
-
-			for ( int i = 0; i < nbLightSample; i++ )
-			{
-
-				lum += _indirectLighting( p_ray, p_hitRecord );
-			}
-			lum /= Vec3f( float( nbLightSample ) );
-
-			lum_list += lum;
-		}
-		return lum_list;
-	}*/
-
-
-
 
 	Vec3f PathIntegrator::_directLighting( Ray ray, LightSample ls, HitRecord hitRecord ) const
 	{
@@ -166,7 +141,7 @@ namespace RT_ISICG
 
 	Vec3f PathIntegrator::_indirectLighting( Vec3f wo, Vec3f wi, HitRecord hitRecord ) const
 	{
-		float angle = glm::max( 0.f, glm::dot( glm::normalize( hitRecord._normal ), wi) );
+		float angle =  glm::dot( glm::normalize( hitRecord._normal ), wi);
 		return hitRecord._object->getMaterial()->shade( wo, hitRecord, wi ) * angle;
 	}
 

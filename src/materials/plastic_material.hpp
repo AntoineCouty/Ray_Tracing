@@ -22,7 +22,7 @@ namespace RT_ISICG
 		}
 		inline const Vec3f & getFlatColor() const override { return _brdfLambert.getKd() + _brdfPhong.getKs(); }
 
-		const Vec3f getEmission()  override { return Vec3f(80.f, 80.f, 80.f); }
+		const Vec3f getEmission()  override { return Vec3f(20.f, 20.f, 20.f); }
 
 		
 

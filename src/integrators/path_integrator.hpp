@@ -28,7 +28,7 @@ namespace RT_ISICG
 		Vec3f _directLighting( Ray ray, LightSample ls, HitRecord hitrecord ) const;
 		Vec3f _indirectLighting( Vec3f wo, Vec3f wi, HitRecord hitRecord ) const;
 		Vec3f _directLightingMain( Ray p_ray, const Scene & p_scene, HitRecord hitrecord ) const;
-		Vec3f _indirectLightingMain( Ray p_ray, const Scene & p_scene, HitRecord p_hitRecord ) const;
+
 		float _getFresnelCoefficient( float n1,
 									  float n2,
 									  Vec3f wI_dir,
@@ -36,8 +36,8 @@ namespace RT_ISICG
 									  Vec3f p_normal,
 									  bool	use_schlick = false ) const;
 		int	  _nbLightSamples = 16;
-		int	  _nbBounces	  = 8;
-		int	  _nbIndirect	  = 4;
+		int	  _nbBounces	  = 5;
+		int	  _nbIndirect	  = 3;
 		int	  _nbPath		  = 1;
 		float _p;
 	};
