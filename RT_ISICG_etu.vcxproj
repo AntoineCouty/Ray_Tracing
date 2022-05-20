@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\integrators\path_integrator.cpp" />
     <ClCompile Include="src\objects\implicit_surface.cpp" />
     <ClCompile Include="src\lights\spot_light.cpp" />
     <ClCompile Include="src\aabb.cpp" />
@@ -172,6 +173,7 @@
     <ClCompile Include="src\integrators\whitted_integrator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\integrators\path_integrator.hpp" />
     <ClInclude Include="src\objects\implicit_sphere.hpp" />
     <ClInclude Include="src\objects\implicit_surface.hpp" />
     <ClInclude Include="src\lights\spot_light.hpp" />

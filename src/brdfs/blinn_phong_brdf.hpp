@@ -12,10 +12,10 @@ namespace RT_ISICG
 	  public:
 		BlinnPhongBRDF( const Vec3f & p_ks, float p_s ) : _ks( p_ks ), _s( p_s ) {};
 		// * INV_PIf : could be done in the constructor...
-		inline Vec3f evaluate( Ray ray, HitRecord hitrecord, LightSample ls ) const
+		inline Vec3f evaluate( Vec3f wo, HitRecord hitrecord, Vec3f wi ) const
 		{
-			Vec3f wO	 = -ray.getDirection();
-			Vec3f wI	 = ls._direction;
+			Vec3f wO	 = -wo;
+			Vec3f wI	 = wi;
 			Vec3f normal = hitrecord._normal;
 			Vec3f h		 = glm::normalize( wO + wI );
 			return _ks *  glm::pow( glm::max( 0.f, glm ::dot( normal, h ) ), _s );

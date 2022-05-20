@@ -12,13 +12,14 @@ namespace RT_ISICG
 		{
 		}
 		virtual ~MatteMaterial() = default;
-		Vec3f shade( const Ray &		 p_ray,
+		Vec3f shade( const Vec3f & p_ray,
 					 const HitRecord &	 p_hitRecord,
-					 const LightSample & p_lightSample ) const override
+					 const Vec3f & p_lightSample ) const override
 		{
 			return _brdf.evaluate( p_ray, p_hitRecord, p_lightSample );
 		}
 		inline const Vec3f & getFlatColor() const override { return _brdf.getKd(); }
+
 
 	  protected:
 		OrenNayarBRDF _brdf;

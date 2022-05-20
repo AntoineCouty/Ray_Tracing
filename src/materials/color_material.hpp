@@ -15,7 +15,7 @@ namespace RT_ISICG
 
 		virtual ~ColorMaterial() = default;
 
-		Vec3f shade( const Ray & p_ray, const HitRecord & p_hit, const LightSample & p_lightSample ) const override
+		Vec3f shade( const Vec3f & p_ray, const HitRecord & p_hit, const Vec3f & p_lightSample ) const override
 		{
 			return _color;
 		}

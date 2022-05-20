@@ -46,6 +46,6 @@ namespace RT_ISICG
 
 	Vec3f DirectLightingIntegrator::_directLighting( Ray ray, LightSample ls, HitRecord hitRecord ) const { 
 		float angle = glm::max( 0.f, glm::dot( glm::normalize( hitRecord._normal ), glm::normalize( ls._direction ) ) );
-		return hitRecord._object->getMaterial()->shade( ray, hitRecord, ls ) * ls._radiance * angle; 
+		return hitRecord._object->getMaterial()->shade( ray.getDirection(), hitRecord, ls._direction ) * ls._radiance * angle; 
 	}
 } // namespace RT_ISICG

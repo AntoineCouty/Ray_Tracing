@@ -29,7 +29,7 @@ namespace RT_ISICG
 	struct SAH
 	{
 		SAH() = default;
-		float		 _note		   = 50000000;
+		float		 _note		   = INT16_MAX;
 		unsigned int _lastIdLeft = 0;
 		unsigned int _firstIdRight = 0;
 	};
@@ -65,7 +65,7 @@ namespace RT_ISICG
 							   const float	   p_tMin,
 							   const float	   p_tMax ) const;
 		Vec2i _findPartition( BVHNode * p_node ) const;
-
+		float _computeTotalAreaV2( int p_first, int p_last ) const;
 		float _computeTotalArea( int p_first, int p_last ) const;
 		float _computeTotalArea( AABB aabb ) const;
 

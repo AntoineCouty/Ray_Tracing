@@ -14,13 +14,17 @@ namespace RT_ISICG
 		{
 		}
 		virtual ~PlasticMaterial() = default;
-		Vec3f shade( const Ray &		 p_ray,
+		Vec3f shade( const Vec3f & p_ray,
 					 const HitRecord &	 p_hitRecord,
-					 const LightSample & p_lightSample ) const override
+					 const Vec3f & p_lightSample ) const override
 		{
 			return _brdfLambert.evaluate() + _brdfPhong.evaluate( p_ray, p_hitRecord, p_lightSample );
 		}
-		inline const Vec3f & getFlatColor() const override { return _brdfLambert.getKd() * 0.7f + _brdfPhong.getKs() * 0.3f; }
+		inline const Vec3f & getFlatColor() const override { return _brdfLambert.getKd() + _brdfPhong.getKs(); }
+
+		const Vec3f getEmission()  override { return Vec3f(80.f, 80.f, 80.f); }
+
+		
 
 	  protected:
 		LambertBRDF _brdfLambert;

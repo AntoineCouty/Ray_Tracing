@@ -15,9 +15,11 @@ namespace RT_ISICG
 		BaseMaterial( const std::string & p_name ) : _name( p_name ) {}
 		virtual ~BaseMaterial() = default;
 
-		virtual Vec3f shade( const Ray &		 p_ray,
+		virtual Vec3f shade( const Vec3f &		 p_ray,
 							 const HitRecord &	 p_hitRecord,
-							 const LightSample & p_lightSample ) const = 0;
+							 const Vec3f & p_lightSample ) const = 0;
+
+		//virtual Vec3f sampleDirection( const Ray & p_ray, const HitRecord & p_hitRecord ) const = 0;
 
 		virtual inline const Vec3f & getFlatColor() const = 0;
 
@@ -29,6 +31,9 @@ namespace RT_ISICG
 
 		virtual const bool isTransparent() { return false; }
 
+		virtual const bool isUseShlick() { return false; }
+
+		virtual const Vec3f  getEmission() { return VEC3F_ZERO;}
 	  protected:
 		std::string _name;
 	};

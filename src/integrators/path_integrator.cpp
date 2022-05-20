@@ -1,42 +1,51 @@
-#include "whitted_integrator.hpp"
 #include "lights/point_light.hpp"
+#include "path_integrator.hpp"
 namespace RT_ISICG
 {
-	Vec3f WhittedIntegrator::Li( const Scene & p_scene,
+	Vec3f PathIntegrator::Li( const Scene & p_scene,
 								 const Ray &   p_ray,
 								 const float   p_tMin,
 								 const float   p_tMax ) const
 	{
-		return _liRecursif( p_scene, p_ray, p_tMin, p_tMax, 0, false );
+		HitRecord hitRecord;
+		
+		return _liRecursif( p_scene, p_ray, p_tMin, p_tMax, 0, 0, false );
 	}
 
-	Vec3f WhittedIntegrator::_liRecursif( const Scene & p_scene,
+	Vec3f PathIntegrator::_liRecursif( const Scene & p_scene,
 										  const Ray &	p_ray,
 										  const float	p_tMin,
 										  const float	p_tMax,
 										  int			p_nbBounces,
+										  int			p_nbBouncesIndirect,
 										  bool			p_inside ) const
 	{
 		HitRecord hitRecord;
 		if ( p_scene.intersect( p_ray, p_tMin, p_tMax, hitRecord ) )
 		{
+			if ( p_nbBounces == _nbBounces ) { return _backgroundColor; }
+			if ( p_nbBouncesIndirect == _nbIndirect ) { return _backgroundColor; }
+
+			if (glm::length(hitRecord._object->getMaterial()->getEmission()) > EPSILON) {
+				return hitRecord._object->getMaterial()->getEmission();
+			}
+				
+
+
 			if ( hitRecord._object->getMaterial()->isMirror() )
 			{
-				if ( p_nbBounces == _nbBounces ) { return _backgroundColor; }
+				
 				Ray ray_reflect = Ray( hitRecord._point, glm::reflect( p_ray.getDirection(), hitRecord._normal ) );
 				ray_reflect.offset( hitRecord._normal );
-				p_nbBounces++;
-				return _liRecursif( p_scene, ray_reflect, p_tMin, p_tMax, p_nbBounces, false );
+				return _liRecursif( p_scene, ray_reflect, p_tMin, p_tMax, p_nbBounces+1, p_nbBouncesIndirect, false );
 			}
 			else if ( hitRecord._object->getMaterial()->isTransparent() )
 			{
-				if ( p_nbBounces == _nbBounces ) { return _backgroundColor; }
-
 				float n1, n2 = 1.f;
 				float ior	 = hitRecord._object->getMaterial()->getIOR();
 				Vec3f normal = hitRecord._normal;
 				Vec3f wI_dir = p_ray.getDirection();
-				p_nbBounces++;
+				
 
 				if ( p_inside )
 				{
@@ -52,16 +61,42 @@ namespace RT_ISICG
 				Vec3f refract_dir = glm::refract( wI_dir, normal, n1 / n2 );
 				Ray	  ray_reflect = Ray( hitRecord._point, glm::reflect( wI_dir, normal ) );
 				Ray	  ray_refract = Ray( hitRecord._point, refract_dir );
-				float ret = _getFresnelCoefficient( n1, n2, wI_dir, refract_dir, normal, hitRecord._object->getMaterial()->isUseShlick());
+				float ret		  = _getFresnelCoefficient( n1, n2, wI_dir, refract_dir, normal );
 				ray_reflect.offset( normal );
-				Vec3f reflect = _liRecursif( p_scene, ray_reflect, p_tMin, p_tMax, p_nbBounces, p_inside ) * ret;
+				Vec3f reflect
+					= _liRecursif( p_scene, ray_reflect, p_tMin, p_tMax, p_nbBounces + 1, p_nbBouncesIndirect, p_inside ) * ret;
 				ray_refract.offset( -normal );
-				return reflect + _liRecursif( p_scene, ray_refract, p_tMin, p_tMax, p_nbBounces, !p_inside ) * ( 1 - ret );
+				return reflect + _liRecursif( p_scene, ray_refract, p_tMin, p_tMax, p_nbBounces + 1, p_nbBouncesIndirect , !p_inside ) * ( 1 - ret );
 			}
-			else
+			
+			
+			//Vec3f direct =  _directLightingMain( p_ray, p_scene, hitRecord );
+			Vec3f indirect = VEC3F_ZERO;
+				
+				
+
+			for ( int i = 0; i < _nbPath; i++ )
 			{
-				return _directLightingMain( p_ray, p_scene, hitRecord );
+				Vec3f dir;
+
+				do
+				{
+					float x	= ( randomFloat() - 0.5 ) * 2.0;
+					float y	= ( randomFloat() - 0.5 ) * 2.0;
+					float z	= ( randomFloat() - 0.5 ) * 2.0;
+					dir = glm::normalize(Vec3f( x, y, z ));
+				} while ( glm::dot(dir, dir) > 1.0 );
+
+				dir		  = glm::dot( dir, hitRecord._normal ) < 0 ? -dir : dir;
+				Ray wi = Ray( hitRecord._point, dir );
+				wi.offset( hitRecord._normal );
+					
+				indirect += _liRecursif( p_scene, wi, p_tMin, p_tMax, p_nbBounces, p_nbBouncesIndirect+1, p_inside )
+							* _indirectLighting( p_ray.getDirection(), dir, hitRecord ) * PI_2f;
 			}
+			indirect /= _nbPath;
+			return indirect;
+			
 		}
 		else
 		{
@@ -69,7 +104,7 @@ namespace RT_ISICG
 		}
 	}
 
-	Vec3f WhittedIntegrator::_directLightingMain( Ray p_ray, const Scene & p_scene, HitRecord p_hitRecord ) const
+	Vec3f PathIntegrator::_directLightingMain( Ray p_ray, const Scene & p_scene, HitRecord p_hitRecord ) const
 	{
 		Vec3f lum;
 		Vec3f lum_list = Vec3f( 0.f );
@@ -79,7 +114,6 @@ namespace RT_ISICG
 			nbLightSample = 1;
 			lum			  = Vec3f( 0.f );
 			if ( light->getSurface() ) { nbLightSample = _nbLightSamples; }
-
 			for ( int i = 0; i < nbLightSample; i++ )
 			{
 				LightSample ls	  = light->sample( p_hitRecord._point );
@@ -98,13 +132,46 @@ namespace RT_ISICG
 		return lum_list;
 	}
 
-	Vec3f WhittedIntegrator::_directLighting( Ray ray, LightSample ls, HitRecord hitRecord ) const
+	/*Vec3f PathIntegrator::_indirectLightingMain( Ray p_ray, const Scene & p_scene, HitRecord p_hitRecord ) const
+	{
+		Vec3f lum;
+		Vec3f lum_list = Vec3f( 0.f );
+		float nbLightSample;
+		for ( BaseLight * light : p_scene.getLights() )
+		{
+			nbLightSample = 1;
+			lum			  = Vec3f( 0.f );
+			if ( light->getSurface() ) { nbLightSample = _nbLightSamples; }
+
+			for ( int i = 0; i < nbLightSample; i++ )
+			{
+
+				lum += _indirectLighting( p_ray, p_hitRecord );
+			}
+			lum /= Vec3f( float( nbLightSample ) );
+
+			lum_list += lum;
+		}
+		return lum_list;
+	}*/
+
+
+
+
+	Vec3f PathIntegrator::_directLighting( Ray ray, LightSample ls, HitRecord hitRecord ) const
 	{
 		float angle = glm::max( 0.f, glm::dot( glm::normalize( hitRecord._normal ), glm::normalize( ls._direction ) ) );
 		return hitRecord._object->getMaterial()->shade( ray.getDirection(), hitRecord, ls._direction ) * ls._radiance * angle;
 	}
 
-	float WhittedIntegrator::_getFresnelCoefficient( float n1,
+	Vec3f PathIntegrator::_indirectLighting( Vec3f wo, Vec3f wi, HitRecord hitRecord ) const
+	{
+		float angle = glm::max( 0.f, glm::dot( glm::normalize( hitRecord._normal ), wi) );
+		return hitRecord._object->getMaterial()->shade( wo, hitRecord, wi ) * angle;
+	}
+
+
+	float PathIntegrator::_getFresnelCoefficient( float n1,
 													 float n2,
 													 Vec3f wI_dir,
 													 Vec3f refract_dir,

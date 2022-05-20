@@ -12,9 +12,9 @@ namespace RT_ISICG
 		{
 		}
 		virtual ~LambertMaterial() = default;
-		Vec3f shade( const Ray &		 p_ray,
+		Vec3f shade( const Vec3f & p_ray,
 					 const HitRecord &	 p_hitRecord,
-					 const LightSample & p_lightSample ) const override
+					 const Vec3f & p_lightSample ) const override
 		{
 			return _brdf.evaluate();
 		}

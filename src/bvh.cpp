@@ -4,6 +4,9 @@
 #include "utils/chrono.hpp"
 #include <algorithm>
 
+
+#define USE_SAH
+
 namespace RT_ISICG
 {
 	void BVH::build( std::vector<TriangleMeshGeometry> * p_triangles )
@@ -61,8 +64,13 @@ namespace RT_ISICG
 							   _triangles->begin() + p_lastTriangleId,
 							   _triangles->begin() + p_lastTriangleId,
 							   [ axe ](  TriangleMeshGeometry & a, TriangleMeshGeometry & b)->bool{ return a.getAABB().centroid()[ axe ] < b.getAABB().centroid()[ axe ];});
-
+			#ifdef USE_SAH
 			Vec2i partition = _findPartition( p_node );
+			#else
+			Vec2i partition = (p_lastTriangleId + p_firstTriangleId;
+			#endif // SAH
+
+			
 			//std::cout <<p_firstTriangleId << " "  << partition[ 0 ] << " " << partition[ 1 ] << " " << p_lastTriangleId << std::endl;
 			p_node->_left = new BVHNode();
 			p_node->_right = new BVHNode();
@@ -101,6 +109,10 @@ namespace RT_ISICG
 		}
 		Vec2i lastId = { sah->_lastIdLeft, sah->_firstIdRight };
 		return lastId;
+	}
+
+	float BVH::_computeTotalAreaV2( int p_first, int p_last ) const {
+		
 	}
 
 	float BVH::_computeTotalArea(int p_first, int p_last) const {

@@ -8,20 +8,20 @@ namespace RT_ISICG
 	class BlinnPhongMaterial : public BaseMaterial
 	{
 	  public:
-		BlinnPhongMaterial( const std::string & p_name, const Vec3f & p_diffuse, float p_s )
-			: BaseMaterial( p_name ), _brdfLambert( p_diffuse ), _brdfBlinnPhong( p_diffuse, p_s )
+		BlinnPhongMaterial( const std::string & p_name, const Vec3f & p_diffuse, const Vec3f & p_specular, float p_s )
+			: BaseMaterial( p_name ), _brdfLambert( p_diffuse ), _brdfBlinnPhong( p_specular, p_s )
 		{
 		}
 		virtual ~BlinnPhongMaterial() = default;
-		Vec3f shade( const Ray &		 p_ray,
+		Vec3f shade( const Vec3f & p_ray,
 					 const HitRecord &	 p_hitRecord,
-					 const LightSample & p_lightSample ) const override
+					 const Vec3f & p_lightSample ) const override
 		{
 			return _brdfLambert.evaluate() + _brdfBlinnPhong.evaluate( p_ray, p_hitRecord, p_lightSample ) ;
 		}
 		inline const Vec3f & getFlatColor() const override
 		{
-			return _brdfLambert.getKd() * 0.7f + _brdfBlinnPhong.getKs() * 0.3f;
+			return _brdfLambert.getKd()  + _brdfBlinnPhong.getKs();
 		}
 
 	  protected:

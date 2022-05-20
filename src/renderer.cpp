@@ -2,6 +2,7 @@
 #include "integrators/ray_cast_integrator.hpp"
 #include "integrators/direct_lighting_integrator.hpp"
 #include "integrators/whitted_integrator.hpp"
+#include "integrators/path_integrator.hpp"
 #include "utils/console_progress_bar.hpp"
 #include "utils/random.hpp"
 
@@ -23,6 +24,9 @@ namespace RT_ISICG
 			break;
 		case IntegratorType::WHITTED: 
 			_integrator = new WhittedIntegrator(); 
+			break;
+		case IntegratorType::PATH: 
+			_integrator = new PathIntegrator(); 
 			break;
 		default:
 		{
@@ -70,7 +74,8 @@ namespace RT_ISICG
 					Ray	  ray	= p_camera->generateRay( float( i + ran_x ) / ( width - 1 ),float( j + ran_y ) / ( height - 1 ) );
 					color += _integrator->Li( p_scene, ray, 0.f, 1000000.f );
 				}
-				p_texture.setPixel(i, j, glm::clamp(color/Vec3f(_nbPixelSamples), 0.f, 1.f));
+				Vec3f colorSample = color / Vec3f( _nbPixelSamples );
+				p_texture.setPixel( i, j, glm::clamp( colorSample, 0.f, 1.f ) );
 			}
 			progressBar.next();
 		}

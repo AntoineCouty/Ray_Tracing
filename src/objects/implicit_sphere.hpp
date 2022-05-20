@@ -20,8 +20,7 @@ namespace RT_ISICG
 		// Signed Distance Function
 		float _sdf( const Vec3f & p_point ) const
 		{
-			Vec3f p_dis = Vec3f(glm::sin( p_point.x ) * glm::sin( p_point.y ) * glm::sin( p_point.z ));
-			return ( glm::length( p_dis - _center ) - _rayon );
+			return ( glm::length( p_point - _center ) - _rayon );
 		}
 
 

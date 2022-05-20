@@ -12,10 +12,10 @@ namespace RT_ISICG
 		MicroFaceBRDF( const Vec3f & p_kd, float p_sigma ): _kd( p_kd ), _sigma( p_sigma ), _alpha( p_sigma * p_sigma ), _F0( p_kd ) {};
 
 
-		inline Vec3f evaluate( Ray p_ray, HitRecord p_hitrecord, LightSample p_ls ) const
+		inline Vec3f evaluate( Vec3f wo, HitRecord p_hitrecord, Vec3f wi ) const
 		{
-			Vec3f wO =  -p_ray.getDirection();
-			Vec3f wI =  p_ls._direction ;
+			Vec3f wO =  -wo;
+			Vec3f wI = wi ;
 			Vec3f normal = p_hitrecord._normal;
 			Vec3f h = glm::normalize(wO + wI) ;
 			

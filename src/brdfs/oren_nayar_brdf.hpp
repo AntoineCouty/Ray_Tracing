@@ -11,11 +11,11 @@ namespace RT_ISICG
 	  public:
 		OrenNayarBRDF( const Vec3f & p_kd, float p_sigma ) : _kd( p_kd ), _sigma( p_sigma ) {};
 		// * INV_PIf : could be done in the constructor...
-		inline Vec3f evaluate( Ray p_ray, HitRecord hitrecod, LightSample p_ls ) const
+		inline Vec3f evaluate( Vec3f wo, HitRecord p_hitrecord, Vec3f wi ) const
 		{
-			Vec3f normal = hitrecod._normal;
-			Vec3f dir_I = p_ls._direction;
-			Vec3f dir_O	 = -p_ray.getDirection();
+			Vec3f normal = p_hitrecord._normal;
+			Vec3f dir_I = wi;
+			Vec3f dir_O	 = -wo;
 
 			
 			float wI_theta = glm::acos( glm::dot( dir_I , normal) );
